@@ -1,0 +1,13 @@
+schema = "hathq://hat/manifest/v1"
+id = "hat/coela-engineering"
+name = "Coela Engineering Guidance"
+version = "0.1.0"
+capabilities = ["maintenance-evidence-review"]
+decision_boundaries = ["recommend-change-readiness"]
+input_classifications = ["public"]
+output_classification = "public"
+
+[[permissions]]
+resource = "engineering-guidance"
+operations = ["read-summary", "review-evidence"]
+mode = "observe"

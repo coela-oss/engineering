@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "coela-engineering-content",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "engineering-principles-en",
+      "locale": "en",
+      "path": "content/en/principles.md",
+      "source_url": "https://github.com/coela-oss/engineering/blob/main/content/en/principles.md",
+      "license": "CC-BY-4.0",
+      "sha256": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43"
+    },
+    {
+      "id": "engineering-principles-ja",
+      "locale": "ja",
+      "path": "content/ja/principles.md",
+      "source_url": "https://github.com/coela-oss/engineering/blob/main/content/ja/principles.md",
+      "license": "CC-BY-4.0",
+      "sha256": "13bd69a229106ea3e040c445aae03b2aded3649a04703bda16ae555594110f48"
+    }
+  ]
+}
