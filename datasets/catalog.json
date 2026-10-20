@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "coela-engineering-content",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "entries": [
     {
       "id": "engineering-principles-en",
@@ -18,6 +18,22 @@
       "source_url": "https://github.com/coela-oss/engineering/blob/main/content/ja/principles.md",
       "license": "CC-BY-4.0",
       "sha256": "13bd69a229106ea3e040c445aae03b2aded3649a04703bda16ae555594110f48"
+    },
+    {
+      "id": "rust-resource-safety-en",
+      "locale": "en",
+      "path": "content/en/rust-resource-safety.md",
+      "source_url": "https://github.com/coela-oss/engineering/blob/main/content/en/rust-resource-safety.md",
+      "license": "CC-BY-4.0",
+      "sha256": "b7c8c43a542bf6507badc76d7a189e30e47ce700ebf314ad9783d1f2b2c4407c"
+    },
+    {
+      "id": "rust-resource-safety-ja",
+      "locale": "ja",
+      "path": "content/ja/rust-resource-safety.md",
+      "source_url": "https://github.com/coela-oss/engineering/blob/main/content/ja/rust-resource-safety.md",
+      "license": "CC-BY-4.0",
+      "sha256": "182c59c4993ae0067ab8c8f0e48ef386b1066a2805f76b4febce445c11605331"
     }
   ]
 }

@@ -8,6 +8,9 @@ The [public dataset](datasets/catalog.json) identifies the same content for
 websites, MCP readers and HAT consumers. Readers should retain the content ID,
 version, source, license and digest when presenting an excerpt.
 
+Read the [Rust resource and failure safety standard](content/en/rust-resource-safety.md)
+or [日本語の規約](content/ja/rust-resource-safety.md).
+
 ## HAT integration
 
 [HAT integration](integrations/hat/README.md) uses HATHQ declarations and shared
