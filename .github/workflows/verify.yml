@@ -1,0 +1,47 @@
+name: Verify public engineering content
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CARGO_BUILD_JOBS: "1"
+      CARGO_INCREMENTAL: "0"
+      CARGO_PROFILE_DEV_DEBUG: "0"
+      CARGO_PROFILE_TEST_DEBUG: "0"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check public content identity and digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(wc -c < datasets/catalog.json)" -le 65536
+          jq -e '.schema_version == 1 and .id == "coela-engineering-content"
+            and (.entries | length > 0 and length <= 100)
+            and ([.entries[].id] | length == (unique | length))
+            and all(.entries[]; (.sha256 | test("^[a-f0-9]{64}$"))
+              and (.path | test("^content/(en|ja)/[a-z0-9-]+[.]md$"))
+              and .license == "CC-BY-4.0")' datasets/catalog.json
+          jq -r '.entries[] | "\(.sha256)  \(.path)"' datasets/catalog.json | sha256sum --check --strict
+      - name: Read fixed public HATHQ validator source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hathq/hat-specifications
+          ref: bea91bd1c72d383d76829484aa42bfda42a0abc7
+          path: .hathq-validator
+          persist-credentials: false
+      - name: Install validator toolchain in the ephemeral runner
+        run: rustup toolchain install 1.97.1 --profile minimal
+      - name: Validate declaration with HATHQ implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          export CARGO_TARGET_DIR="$RUNNER_TEMP/hathq-validator-target"
+          cargo +1.97.1 run --locked --manifest-path .hathq-validator/Cargo.toml -p hat-specifications-cli --bin hat-specifications -- validate "$GITHUB_WORKSPACE/integrations/hat/coela-engineering.hat.toml"
