@@ -1,0 +1,79 @@
+# Rust resource and failure safety
+
+Status: engineering guidance, version 0.1.0. Reviewed against the primary
+references below on 2026-10-21. Each implementation records its actual supported
+Rust/dependency versions and test environment separately. Re-review when runtime,
+allocator, subprocess handling, OS containment or input limits change.
+
+## Memory and data boundaries
+
+Validate sizes before allocation, then enforce per-item and aggregate byte,
+entry and nesting budgets while reading. Prefer streaming hashing, parsing and
+copying; a checked file size does not justify reading an archive into one buffer.
+Reject changes observed during a read. Bound decompressed data independently.
+For retained collections use checked arithmetic and fallible reservation where
+appropriate. Do not promise recovery from every allocator failure: some aborts
+and OS kills cannot be handled inside the process. `catch_unwind` is not OOM
+containment. Review repeated cloning, retained `Arc` graphs and unbounded caches.
+
+## Concurrency belongs to a shared budget
+
+Acquire a capacity permit before spawning work. Bound channels, queues, workers,
+processes and retries, and apply backpressure rather than accumulating tasks.
+Separate products running on the same machine share an admission budget; a
+per-process cap alone is insufficient. CPU quotas and job-count flags do not
+necessarily constrain library thread pools. Verify effective CPU affinity and
+pool settings as well as the aggregate process/thread limit.
+
+## Ownership, interruption and errors
+
+Use typed outcomes for unavailable resources, cancelled work, timeout, child
+failure and incomplete evidence. Await each owned child and release permits on
+all exit paths. A timeout around a future is not proof its blocking operation
+stopped. Review cancellation requirements before using `spawn_blocking`; started
+blocking tasks are not made stoppable by aborting their handles.
+
+Prefer maintained OS/runtime libraries for process supervision. Terminate only
+verified owned children or the dedicated job/container; never target PID/group
+zero, the user's session, the VM or unrelated processes. Use bounded graceful
+shutdown followed by bounded forced termination and reap completion. Drain or
+bound output so a full pipe cannot deadlock shutdown. Library code returns
+errors rather than terminating its host process.
+
+## Host protection and failure evidence
+
+Check effective resource delegation before launching a build or stress test.
+Keep explicit headroom for the host and abort admission if it is unavailable.
+Combine OS memory/process limits with a shared admission lock, serial defaults,
+bounded runtime and pressure observation. A cgroup limit does not prove that a
+VM, filesystem or ancestor group is immune to failure. Never claim platform
+safety from a single successful containment probe.
+
+Write an incomplete marker before expensive work; commit success only after
+all required steps, artifact hashes and source/version checks complete. The
+outside supervisor records abnormal unit exits. Missing or truncated records
+remain failures. A killed process cannot reliably write its own final receipt.
+After an abrupt stop, preserve local changes and verify repository integrity;
+do not build or publish from a corrupt Git object database.
+
+## Tests and review
+
+Use small synthetic inputs and controlled child exits for ordinary regressions.
+Test limits, cancellation before/after spawn, missing executables, failed exit,
+partial output, unavailable isolation and rejected publication without exhausting
+host memory. Actual OOM, large fan-out and VM-kill experiments require a separate
+explicitly reviewed disposable environment. Record measured peak memory/tasks,
+exit reason, skipped cases and scope; distinguish leaks from bounded high use,
+thread exhaustion, abrupt host failure and an unknown cause.
+
+A local build is not hosted CI, full product acceptance or provenance attestation.
+Its exact source, version, executed steps and artifacts remain explicit. Never
+change a failed hosted check to passed merely because a different local scope
+completed. Keep implementation units focused, normally under 120 lines, and
+avoid adding a second custom runtime, encryption layer or lifecycle authority.
+
+## Primary references
+
+- [Rust Vec and fallible reservation](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.try_reserve)
+- [Tokio blocking-task cancellation](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html)
+- [systemd resource controls](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html)
