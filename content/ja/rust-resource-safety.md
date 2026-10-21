@@ -1,6 +1,6 @@
 # Rustの資源制御と異常終了の規約
 
-状態：エンジニアリング指針、版0.1.2。下記の一次資料を2026-10-21に確認。
+状態：エンジニアリング指針、版0.1.3。下記の一次資料を2026-10-21に確認。
 適用するRust・依存ライブラリの版と実試験環境は、各実装で別途記録する。
 ランタイム、アロケータ、子プロセス処理、OS隔離、入力上限の変更時に見直す。
 
@@ -21,6 +21,12 @@ APIを使う。すべての確保失敗からの復帰は保証しない。ア�
 同じマシン上の別製品も共通の実行予算を使う。プロセス単体の上限だけでは足りない。
 CPU使用率やビルドジョブ数の制限が、依存ライブラリのスレッド数まで制限するとは
 限らない。実効CPU affinity・プール設定・合計プロセス／スレッド数を確認する。
+
+資源不足が起こり得るスレッド起動は、失敗を返せる`Builder::spawn_scoped`を使う。
+途中で起動に失敗してもscopeは既存ワーカーの終了を待つため、固定人数のバリアは
+エラー処理中にも停止を起こし得る。待機中のワーカーを中断できる構成にし、join前に
+解放する。ホストの資源を使い切らず部分的な起動失敗を試験する。必須ワーカーの
+起動拒否は試験失敗とし、並行数を減らして全件検証済みとは報告しない。
 
 ## 所有権、中断、エラー
 
@@ -102,3 +108,5 @@ Unix権限や移植可能な契約の試験を、Windows ACL・DPAPIの実機受
 - [Cargoの配布ファイル選択](https://doc.rust-lang.org/cargo/reference/manifest.html#the-include-and-exclude-fields)
 
 - [tempfile Builder permissions](https://docs.rs/tempfile/3.27.0/tempfile/struct.Builder.html#method.permissions)
+- [Rustの失敗を返せるscoped thread起動](https://doc.rust-lang.org/std/thread/struct.Builder.html#method.spawn_scoped)
+- [Rustのscope終了時のjoin保証](https://doc.rust-lang.org/std/thread/fn.scope.html)
