@@ -1,6 +1,6 @@
 # Rust resource and failure safety
 
-Status: engineering guidance, version 0.1.0. Reviewed against the primary
+Status: engineering guidance, version 0.1.1. Reviewed against the primary
 references below on 2026-10-21. Each implementation records its actual supported
 Rust/dependency versions and test environment separately. Re-review when runtime,
 allocator, subprocess handling, OS containment or input limits change.
@@ -56,6 +56,30 @@ remain failures. A killed process cannot reliably write its own final receipt.
 After an abrupt stop, preserve local changes and verify repository integrity;
 do not build or publish from a corrupt Git object database.
 
+## Build storage and dependency budgets
+
+Measure published archives separately from local build directories. Debug symbols,
+incremental state, feature combinations, targets and repeated dependency builds can
+dominate `target/` without increasing the delivered package. For constrained local
+checks, use one Cargo job, `debug = 0` and `incremental = false` in the dev/test
+profiles, while keeping assertions and overflow checks enabled. Full debugger
+information is an explicit alternative; release settings remain owner-controlled.
+These settings reduce build storage, not a guaranteed memory ceiling.
+
+Review duplicate dependency versions by inverse dependency paths and enabled
+features. Separate optional, test, build and target-specific dependencies from
+the product runtime. Do not force incompatible versions together, lower security
+requirements, or bump package versions merely to deduplicate a lockfile. Verify
+actual consumer/API compatibility before changing a dependency boundary.
+
+Use bounded file-list/archive inspection before rebuilding. Exclude local state,
+credentials, caches and compiler output from source packages; retain required
+licenses, notices and runtime dependencies. Clean reproducible output only after
+checking active builders and tracked files. Keep source, unmerged work and receipts.
+Use finite retention for per-candidate build directories rather than accumulating
+copies indefinitely. On WSL, deleting guest files does not guarantee immediate
+reclamation of the Windows VHD allocation; check host free space separately.
+
 ## Tests and review
 
 Use small synthetic inputs and controlled child exits for ordinary regressions.
@@ -77,3 +101,5 @@ avoid adding a second custom runtime, encryption layer or lifecycle authority.
 - [Rust Vec and fallible reservation](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.try_reserve)
 - [Tokio blocking-task cancellation](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html)
 - [systemd resource controls](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html)
+- [Cargo build profiles](https://doc.rust-lang.org/cargo/reference/profiles.html)
+- [Cargo package file selection](https://doc.rust-lang.org/cargo/reference/manifest.html#the-include-and-exclude-fields)
