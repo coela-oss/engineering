@@ -1,6 +1,6 @@
 # Rustの資源制御と異常終了の規約
 
-状態：エンジニアリング指針、版0.1.0。下記の一次資料を2026-10-21に確認。
+状態：エンジニアリング指針、版0.1.1。下記の一次資料を2026-10-21に確認。
 適用するRust・依存ライブラリの版と実試験環境は、各実装で別途記録する。
 ランタイム、アロケータ、子プロセス処理、OS隔離、入力上限の変更時に見直す。
 
@@ -49,6 +49,27 @@ VM、ファイルシステム、親グループまで安全とは断定しない
 突然の停止後はローカル変更を保全してGitの整合を検査し、壊れたオブジェクトDBから
 ビルドや公開をしない。
 
+## ビルド容量と依存関係の予算
+
+公開アーカイブとローカルのビルドディレクトリは分けて測る。デバッグ情報、増分状態、
+feature・対象環境の組合せ、繰り返しの依存ビルドは、配布物が小さくても`target/`を
+大きくする。資源が限られたローカル検証ではCargoを1ジョブとし、dev/testの
+`debug = 0`、`incremental = false`を使う。assertionとオーバーフロー検査は維持する。
+詳細なデバッガ情報は明示的に選択し、releaseの設定は各ownerが管理する。
+これらはビルド容量の削減策であり、メモリ上限の保証ではない。
+
+依存の複数版は、逆引きした依存経路と有効featureを確認する。optional・試験・
+ビルド・対象OS専用の依存と、製品実行時の依存を区別する。互換でない版の強制統一、
+セキュリティ条件の緩和、lockfileの重複解消だけを目的とした製品の版上げはしない。
+依存境界を変える前に、実際のconsumer/API互換性を検証する。
+
+再ビルド前に、上限付きのファイル一覧・アーカイブ検査を行う。ソース配布にはローカル
+状態・認証情報・キャッシュ・コンパイラ出力を含めず、必要なライセンス・NOTICE・
+実行時依存は保持する。稼働中のビルドとGit追跡ファイルを確認して再生成可能な出力
+だけを削除し、ソース・未マージ作業・受入記録は残す。候補別ビルドの保持期間を定め、
+コピーを無期限に蓄積しない。WSL内の削除はWindows上のVHD割当の即時縮小を
+保証しないため、ホストの空き容量を別に確認する。
+
 ## 試験とレビュー
 
 通常の回帰試験は小さな合成入力と制御した子の終了で行う。上限、起動前後の中断、
@@ -68,3 +89,5 @@ VM、ファイルシステム、親グループまで安全とは断定しない
 - [Rust Vecと確保失敗を返すAPI](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.try_reserve)
 - [Tokioのブロッキング処理と中断](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html)
 - [systemdの資源制御](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html)
+- [Cargoのビルドprofile](https://doc.rust-lang.org/cargo/reference/profiles.html)
+- [Cargoの配布ファイル選択](https://doc.rust-lang.org/cargo/reference/manifest.html#the-include-and-exclude-fields)
