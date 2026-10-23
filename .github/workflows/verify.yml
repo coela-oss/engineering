@@ -18,6 +18,17 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.22.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413
+        with:
+          version: 10.29.3
+      - name: Verify shared content reader and projections
+        run: |
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm typecheck
+          pnpm test
       - name: Check public content identity and digests
         shell: bash
         run: bash scripts/verify-content.sh
@@ -25,7 +36,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hathq/hat-specifications
-          ref: bea91bd1c72d383d76829484aa42bfda42a0abc7
+          ref: 174fcce8e2b3ffbb68a1ff046e94370563a885f9
           path: .hathq-validator
           persist-credentials: false
       - name: Install validator toolchain in the ephemeral runner
@@ -36,3 +47,18 @@ jobs:
           set -euo pipefail
           export CARGO_TARGET_DIR="$RUNNER_TEMP/hathq-validator-target"
           cargo +1.97.1 run --locked --manifest-path .hathq-validator/Cargo.toml -p hat-specifications-cli --bin hat-specifications -- validate "$GITHUB_WORKSPACE/integrations/hat/coela-engineering.hat.toml"
+      - name: Read fixed shared MCP implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: zixcel/zixcel-mcp-gateway
+          ref: 0cfe84b3e0a63cd1a4dbafd822b2fc0db16080eb
+          path: .mcp-gateway
+          persist-credentials: false
+      - name: Accept actual independent read-only MCP consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          export CARGO_TARGET_DIR="$RUNNER_TEMP/mcp-gateway-target"
+          cargo +1.97.1 build --locked --manifest-path .mcp-gateway/Cargo.toml --bin zixcel-mcp-gateway
+          "$CARGO_TARGET_DIR/debug/zixcel-mcp-gateway" validate-config --config integrations/mcp/public.toml
+          ENGINEERING_MCP_BINARY="$CARGO_TARGET_DIR/debug/zixcel-mcp-gateway" pnpm test:mcp

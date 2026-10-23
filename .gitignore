@@ -4,3 +4,4 @@
 /.env
 /.env.*
 /.hathq-validator/
+/.mcp-gateway/

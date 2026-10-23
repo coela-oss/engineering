@@ -1,0 +1,16 @@
+{
+  "name": "@coela/engineering-source",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@10.29.3",
+  "engines": { "node": ">=24.22.1 <25" },
+  "scripts": {
+    "verify:content": "node scripts/verify-content.mts",
+    "test": "node --test test/content.test.mts",
+    "test:mcp": "node --test test/mcp-consumer.mts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": { "@types/node": "24.19.2", "typescript": "5.9.3" }
+}
