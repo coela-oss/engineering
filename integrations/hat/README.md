@@ -20,3 +20,6 @@ execution host is included here.
 Website and MCP consumers use the same content ID and version. They do not
 create separately edited HAT or MCP copies of the principles. Signed package
 publication and real consumer acceptance are subsequent steps.
+
+[Review responsibilities](review-responsibilities.md) classify the engineering
+concerns without introducing separate agents or an execution authority.

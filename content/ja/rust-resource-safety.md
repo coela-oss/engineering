@@ -1,6 +1,6 @@
 # Rustの資源制御と異常終了の規約
 
-状態：エンジニアリング指針、版0.1.1。下記の一次資料を2026-10-21に確認。
+状態：エンジニアリング指針、版0.1.3。下記の一次資料を2026-10-21に確認。
 適用するRust・依存ライブラリの版と実試験環境は、各実装で別途記録する。
 ランタイム、アロケータ、子プロセス処理、OS隔離、入力上限の変更時に見直す。
 
@@ -21,6 +21,12 @@ APIを使う。すべての確保失敗からの復帰は保証しない。ア�
 同じマシン上の別製品も共通の実行予算を使う。プロセス単体の上限だけでは足りない。
 CPU使用率やビルドジョブ数の制限が、依存ライブラリのスレッド数まで制限するとは
 限らない。実効CPU affinity・プール設定・合計プロセス／スレッド数を確認する。
+
+資源不足が起こり得るスレッド起動は、失敗を返せる`Builder::spawn_scoped`を使う。
+途中で起動に失敗してもscopeは既存ワーカーの終了を待つため、固定人数のバリアは
+エラー処理中にも停止を起こし得る。待機中のワーカーを中断できる構成にし、join前に
+解放する。ホストの資源を使い切らず部分的な起動失敗を試験する。必須ワーカーの
+起動拒否は試験失敗とし、並行数を減らして全件検証済みとは報告しない。
 
 ## 所有権、中断、エラー
 
@@ -70,6 +76,15 @@ feature・対象環境の組合せ、繰り返しの依存ビルドは、配布�
 コピーを無期限に蓄積しない。WSL内の削除はWindows上のVHD割当の即時縮小を
 保証しないため、ホストの空き容量を別に確認する。
 
+## 一時領域と試験データの保護
+
+試験用ディレクトリは作成時に権限を明示し、親ディレクトリの信頼条件も満たす。
+呼出側のumaskやビルド出力先が私有であると仮定しない。利用が終わるまで自動破棄の
+ガードを保持し、生成した補助実行ファイルと設定は利用前に権限を設定する。
+拒否試験では危険な権限を明示的に作る。試験実行器が所有child向けの作成マスクを
+厳しくする場合も、利用者のセッションを変更したり本番の検証を緩めたりしない。
+Unix権限や移植可能な契約の試験を、Windows ACL・DPAPIの実機受入とは扱わない。
+
 ## 試験とレビュー
 
 通常の回帰試験は小さな合成入力と制御した子の終了で行う。上限、起動前後の中断、
@@ -91,3 +106,7 @@ feature・対象環境の組合せ、繰り返しの依存ビルドは、配布�
 - [systemdの資源制御](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html)
 - [Cargoのビルドprofile](https://doc.rust-lang.org/cargo/reference/profiles.html)
 - [Cargoの配布ファイル選択](https://doc.rust-lang.org/cargo/reference/manifest.html#the-include-and-exclude-fields)
+
+- [tempfile Builder permissions](https://docs.rs/tempfile/3.27.0/tempfile/struct.Builder.html#method.permissions)
+- [Rustの失敗を返せるscoped thread起動](https://doc.rust-lang.org/std/thread/struct.Builder.html#method.spawn_scoped)
+- [Rustのscope終了時のjoin保証](https://doc.rust-lang.org/std/thread/fn.scope.html)

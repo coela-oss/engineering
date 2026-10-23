@@ -1,6 +1,6 @@
 # Rust resource and failure safety
 
-Status: engineering guidance, version 0.1.1. Reviewed against the primary
+Status: engineering guidance, version 0.1.3. Reviewed against the primary
 references below on 2026-10-21. Each implementation records its actual supported
 Rust/dependency versions and test environment separately. Re-review when runtime,
 allocator, subprocess handling, OS containment or input limits change.
@@ -24,6 +24,13 @@ Separate products running on the same machine share an admission budget; a
 per-process cap alone is insufficient. CPU quotas and job-count flags do not
 necessarily constrain library thread pools. Verify effective CPU affinity and
 pool settings as well as the aggregate process/thread limit.
+
+Use fallible thread admission (`Builder::spawn_scoped`) where exhaustion is
+possible. A scoped join still waits for already-created workers after a later
+spawn fails; a fixed-count barrier can therefore deadlock during error handling.
+Give waiting workers a cancellation path, release them before joining, and test
+partial admission without exhausting the host. A refused required worker is a
+failed test, not reduced concurrency reported as complete coverage.
 
 ## Ownership, interruption and errors
 
@@ -80,6 +87,16 @@ Use finite retention for per-candidate build directories rather than accumulatin
 copies indefinitely. On WSL, deleting guest files does not guarantee immediate
 reclamation of the Windows VHD allocation; check host free space separately.
 
+## Private temporary and test state
+
+Create private test directories with explicit permissions and trusted ancestry;
+do not assume a caller's umask or a build directory is private. Keep the cleanup
+guard alive until its users finish, and set generated helper executable/configuration
+permissions before admission. Construct unsafe permissions explicitly in rejection
+tests. A harness may tighten its own creation mask for owned children; it must not
+change a user's session or weaken production validation. Unix permission tests and
+portable contract tests are not Windows ACL/DPAPI acceptance.
+
 ## Tests and review
 
 Use small synthetic inputs and controlled child exits for ordinary regressions.
@@ -103,3 +120,7 @@ avoid adding a second custom runtime, encryption layer or lifecycle authority.
 - [systemd resource controls](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html)
 - [Cargo build profiles](https://doc.rust-lang.org/cargo/reference/profiles.html)
 - [Cargo package file selection](https://doc.rust-lang.org/cargo/reference/manifest.html#the-include-and-exclude-fields)
+
+- [tempfile Builder permissions](https://docs.rs/tempfile/3.27.0/tempfile/struct.Builder.html#method.permissions)
+- [Rust fallible scoped thread creation](https://doc.rust-lang.org/std/thread/struct.Builder.html#method.spawn_scoped)
+- [Rust scope joining guarantees](https://doc.rust-lang.org/std/thread/fn.scope.html)
