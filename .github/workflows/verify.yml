@@ -20,16 +20,7 @@ jobs:
           persist-credentials: false
       - name: Check public content identity and digests
         shell: bash
-        run: |
-          set -euo pipefail
-          test "$(wc -c < datasets/catalog.json)" -le 65536
-          jq -e '.schema_version == 1 and .id == "coela-engineering-content"
-            and (.entries | length > 0 and length <= 100)
-            and ([.entries[].id] | length == (unique | length))
-            and all(.entries[]; (.sha256 | test("^[a-f0-9]{64}$"))
-              and (.path | test("^content/(en|ja)/[a-z0-9-]+[.]md$"))
-              and .license == "CC-BY-4.0")' datasets/catalog.json
-          jq -r '.entries[] | "\(.sha256)  \(.path)"' datasets/catalog.json | sha256sum --check --strict
+        run: bash scripts/verify-content.sh
       - name: Read fixed public HATHQ validator source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

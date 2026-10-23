@@ -8,6 +8,11 @@ The [public dataset](datasets/catalog.json) identifies the same content for
 websites, MCP readers and HAT consumers. Readers should retain the content ID,
 version, source, license and digest when presenting an excerpt.
 
+Run `bash scripts/verify-content.sh` to verify the catalog and its bounded,
+regular content files. Local verification and CI use this same entrypoint;
+neither downloads dependencies nor changes state. The separate CI declaration
+check uses the pinned public HATHQ implementation.
+
 Read the [Rust resource and failure safety standard](content/en/rust-resource-safety.md)
 or [日本語の規約](content/ja/rust-resource-safety.md).
 
