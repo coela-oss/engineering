@@ -65,3 +65,14 @@ subject/scope acceptance and immutable release/distribution acceptance. A checke
 source snapshot, a locally verified reader, a running stdio consumer, hosted MCP
 and a deployed portfolio are distinct results. Existing local heavy runtime/build
 holds remain in force; Rust builds run only in the ephemeral owner CI runner.
+
+## Content-only release candidate
+
+After source CI acceptance, `node scripts/package-content.mts NEW_DIRECTORY`
+binds the clean tracked source commit to an allowlisted Git archive of the
+catalog, selections, four source documents and license texts. It emits
+`release.json` and `SHA256SUMS`, refuses an existing output directory, uses the
+standard Git archiver and hashes the archive as a stream. No package manager,
+credentials, model or network access is needed. Publication is a separate owner
+operation after anonymous source/archive checks. This release is content-only;
+it does not distribute a signed HAT, install a service or grant execution.
