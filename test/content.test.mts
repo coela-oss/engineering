@@ -30,8 +30,10 @@ test('real EN/JA readers retain exact source, version, license, attribution and 
     assert.equal(web.license, 'CC-BY-4.0')
     assert.equal(web.attribution, 'Coela')
     assert.match(web.source, /\/blob\/[a-f0-9]{40}\//)
-    assert.ok(actual.text.replace(/\s+/g, ' ').includes(web.excerpt))
+    assert.ok(actual.text.replace(/\s+/g, ' ').includes(web.excerpt.replace(/…$/u, '')))
     assert.ok(Buffer.byteLength(web.excerpt) <= 160)
+    assert.match(web.excerpt, /[.!?。！？…]$/u)
+    assert.doesNotMatch(web.excerpt, /^(Status:|状態：)/u)
   }
 })
 test('closed selection refuses stale catalog/content/version, unknown ID and injected authority', () => {

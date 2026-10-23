@@ -24,7 +24,9 @@ Raw input/path/OS details are not printed by either CLI on failure.
 ## Excerpt and navigation projection
 
 `websiteExcerpt` returns the same selection, locale, license, attribution,
-immutable source URL and first non-heading paragraph limited to 160 UTF-8 bytes.
+immutable source URL and the first complete sentence of the first non-heading, non-status paragraph,
+limited to 160 UTF-8 bytes. A longer sentence ends with an ellipsis rather than
+pretending to be complete.
 Whitespace is normalized; excerpts are plain text, never HTML. The portfolio can
 consume this projection instead of editing another principles copy. It must
 preserve the identity and attribution when adapting the display. The source
