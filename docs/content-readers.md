@@ -24,7 +24,9 @@ Raw input/path/OS details are not printed by either CLI on failure.
 ## Excerpt and navigation projection
 
 `websiteExcerpt` returns the same selection, locale, license, attribution,
-immutable source URL and first non-heading paragraph limited to 160 UTF-8 bytes.
+immutable source URL and the first complete sentence of the first non-heading, non-status paragraph,
+limited to 160 UTF-8 bytes. A longer sentence ends with an ellipsis rather than
+pretending to be complete.
 Whitespace is normalized; excerpts are plain text, never HTML. The portfolio can
 consume this projection instead of editing another principles copy. It must
 preserve the identity and attribution when adapting the display. The source
@@ -63,3 +65,14 @@ subject/scope acceptance and immutable release/distribution acceptance. A checke
 source snapshot, a locally verified reader, a running stdio consumer, hosted MCP
 and a deployed portfolio are distinct results. Existing local heavy runtime/build
 holds remain in force; Rust builds run only in the ephemeral owner CI runner.
+
+## Content-only release candidate
+
+After source CI acceptance, `node scripts/package-content.mts NEW_DIRECTORY`
+binds the clean tracked source commit to an allowlisted Git archive of the
+catalog, selections, four source documents and license texts. It emits
+`release.json` and `SHA256SUMS`, refuses an existing output directory, uses the
+standard Git archiver and hashes the archive as a stream. No package manager,
+credentials, model or network access is needed. Publication is a separate owner
+operation after anonymous source/archive checks. This release is content-only;
+it does not distribute a signed HAT, install a service or grant execution.
