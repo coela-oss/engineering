@@ -1,0 +1,64 @@
+{
+  "schema_version": "coela-knowledge-unit/1-candidate",
+  "id": "engineering-principles",
+  "version": "0.1.0",
+  "kind": "guidance",
+  "owner": "https://github.com/coela-oss/engineering",
+  "default_locale": "ja",
+  "presentation": [
+    {
+      "locale": "ja",
+      "title": {
+        "value": "エンジニアリングの原則"
+      },
+      "summary": {
+        "value": "設計・実装の判断を、責務・権限・証拠の観点から確認するための指針。"
+      }
+    },
+    {
+      "locale": "en",
+      "title": {
+        "value": "Engineering principles"
+      },
+      "summary": {
+        "value": "Guidance for reviewing engineering decisions through responsibilities, authority and evidence."
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "principles-en",
+      "role": "guidance",
+      "locale": "en",
+      "reference": {
+        "kind": "catalog-selection",
+        "repository": "https://github.com/coela-oss/engineering",
+        "revision": "9e896321167a814f86b93a21a54c379fc0277a9e",
+        "selection": {
+          "catalogId": "coela-engineering-content",
+          "version": "0.2.4",
+          "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+          "contentId": "engineering-principles-en",
+          "contentSha256": "152199edd03f171ec85011c4ec22376b88dec762cf8b3c2db175718670531e43"
+        }
+      }
+    },
+    {
+      "id": "principles-ja",
+      "role": "guidance",
+      "locale": "ja",
+      "reference": {
+        "kind": "catalog-selection",
+        "repository": "https://github.com/coela-oss/engineering",
+        "revision": "9e896321167a814f86b93a21a54c379fc0277a9e",
+        "selection": {
+          "catalogId": "coela-engineering-content",
+          "version": "0.2.4",
+          "catalogSha256": "99d4f79a6dd291a35e060b225ec34b1793863ac67927d035796e80bde7b1527f",
+          "contentId": "engineering-principles-ja",
+          "contentSha256": "13bd69a229106ea3e040c445aae03b2aded3649a04703bda16ae555594110f48"
+        }
+      }
+    }
+  ]
+}

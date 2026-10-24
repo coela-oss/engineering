@@ -24,6 +24,11 @@ in a plugin, with separately accepted sem-lang and HAT projections. Public
 guidance reading does not require semantic adoption or a HAT execution grant.
 The plugin and these later projections are planned, not released by this design.
 
+[Candidate source schema and Portfolio mapping](docs/knowledge-source-schema.md)
+adds a small JSON authoring envelope with immutable content references. Its
+templates preserve native sem-lang definitions and Web-specific composition;
+candidate validation is not production loading or semantic adoption acceptance.
+
 ## HAT integration
 
 [HAT integration](integrations/hat/README.md) uses HATHQ declarations and shared
