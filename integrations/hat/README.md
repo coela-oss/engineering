@@ -1,5 +1,11 @@
 # HATHQ integration
 
+The [plugin/semantic/HAT extension design](../../docs/plugin-extension.md) separates
+the initial Skill distribution from later semantic adoption and authorized HAT
+execution. A plugin is not a signed HAT package or a grant; HAT execution is not
+required to read public guidance. Keep executable HAT implementations in the
+HATHQ implementation owner rather than adding a runtime to this content owner.
+
 A consumer can reference the reviewed public content in
 [the catalog](../../datasets/catalog.json) through an existing HAT and an
 explicit subject and scope binding. It must verify the selected content digest

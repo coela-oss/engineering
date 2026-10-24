@@ -16,6 +16,14 @@ check uses the pinned public HATHQ implementation.
 Read the [Rust resource and failure safety standard](content/en/rust-resource-safety.md)
 or [日本語の規約](content/ja/rust-resource-safety.md).
 
+## Plugin and later extensions
+
+[Plugin, semantic set and HAT boundaries](docs/plugin-extension.md) defines Coela
+Engineering as one knowledge/workflow offering, initially distributed as Skills
+in a plugin, with separately accepted sem-lang and HAT projections. Public
+guidance reading does not require semantic adoption or a HAT execution grant.
+The plugin and these later projections are planned, not released by this design.
+
 ## HAT integration
 
 [HAT integration](integrations/hat/README.md) uses HATHQ declarations and shared
