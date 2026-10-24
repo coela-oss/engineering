@@ -28,7 +28,11 @@ pub fn verify(engine: &Engine, term: TermId) -> Result<()> {
         if result.concept != Some(term) {
             return Err("wrong selected semantic term".into());
         }
-        let canonical = result.expression.canonical();
+        let canonical = result
+            .expression
+            .as_ref()
+            .ok_or("missing native expression")?
+            .canonical();
         if expression
             .as_ref()
             .is_some_and(|previous| previous != &canonical)

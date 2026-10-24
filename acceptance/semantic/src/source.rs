@@ -23,7 +23,10 @@ pub struct Input {
 }
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 pub fn hash(bytes: &[u8]) -> String {
-    format!("{:x}", Sha256::digest(bytes))
+    Sha256::digest(bytes)
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 pub fn parse(bytes: &[u8]) -> Result<Input> {
     if bytes.len() > 131_072 {
