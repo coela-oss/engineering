@@ -18,7 +18,8 @@ source fingerprints. Its report compares all four records and rejects missing,
 extra or changed values. This does not adopt semantic definitions or grant actions.
 No full text is forced into a v1 summary, and no generic gateway is copied here.
 
-Before closing zixcel/zixcel-mcp-gateway#24, publish the reviewed 0.2.0 crate through
-its existing owner gate, independently verify registry bytes/source, and accept this
-caller against those published bytes. A source-candidate CI pass alone is not proof
-of registry publication. No site, DNS, credential or HAT/runtime change is implied.
+CI downloads the published 0.2.0 crate anonymously, verifies its fixed SHA256
+`46ead1b2760ff353eb6bdade23d42ea85f8865d4d7297aa0f2079891f989e2af`,
+and installs exactly those admitted bytes with their locked dependencies in the
+ephemeral runner. Both v1 and v2 clients and the lifecycle report use that binary.
+The digest matches the reviewed main/tag artifact and the registry checksum. No site, DNS, credential or HAT/runtime change is implied.
