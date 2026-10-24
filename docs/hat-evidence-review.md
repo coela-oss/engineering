@@ -19,8 +19,14 @@ output is independently compared before projection. All existing Plugin, Web,
 semantic and MCP interfaces remain checked. This does not validate unobserved
 callers, semantic equivalence, factual truth or Hatter authority.
 
-The candidate CI builds pinned public HAT source on an ephemeral hosted runner.
-This is source acceptance only. Keep this caller PR as draft until HAT 0.11.0 is
-published, anonymously verified, then accepted from its exact immutable bundle.
-Do not run the active Hatter path or resume held host/isolation tests. A public
-owner build/attestation does not replace a signed installation catalog.
+CI reads the exact published source solely for lifecycle fingerprints. Execution
+uses the anonymous HAT 0.11.0 release specified in
+`integrations/hat/review-runtime.json`. Admission verifies the whole archive hash,
+bounds compressed/decompressed bytes, rejects unsafe archive members and checks
+the exact worker hash before creating a private executable. Source builds cannot
+substitute for the published binary in this acceptance path.
+
+The actual native consumer and this published binary run on an ephemeral hosted
+runner. This verifies the explicit offline review command, not active Hatter
+invocation. A public owner build/attestation does not replace a signed installation
+catalog. Existing host/isolation holds remain in place.

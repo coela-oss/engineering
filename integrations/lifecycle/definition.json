@@ -561,7 +561,7 @@
         {
           "id": "software-architect",
           "owner": "https://github.com/hathq/hat-software-architect",
-          "revision": "02d0681507b13e0bdaf4c26341db0e2b8b076cc2",
+          "revision": "4a8025d4a2fef8777e104bdbfd5b1da61c9911aa",
           "native_sources": [
             {
               "path": "src/review/model.rs",

@@ -1,4 +1,5 @@
 import { test } from 'node:test'
+import { createHash } from 'node:crypto'
 import assert from 'node:assert/strict'
 import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
@@ -11,6 +12,8 @@ const root = fileURLToPath(new URL('..', import.meta.url))
 test('real native meaning evidence is reviewed by the independent HAT without inferring deployment or grants', () => {
   const native = process.env.ENGINEERING_SEMANTIC_BINARY, hat = process.env.ENGINEERING_HAT_BINARY
   assert.ok(native && hat && native.startsWith('/') && hat.startsWith('/'), 'Explicit native and HAT binaries required')
+  const release = JSON.parse(readFileSync(new URL('../integrations/hat/review-runtime.json', import.meta.url), 'utf8'))
+  assert.equal(createHash('sha256').update(readFileSync(hat)).digest('hex'), release.binarySha256, 'Exact published HAT binary required')
   const temp = mkdtempSync(join(tmpdir(), 'coela-hat-review-'))
   try {
     const path = (name: string) => join(temp, name + '.json')
@@ -33,7 +36,7 @@ test('real native meaning evidence is reviewed by the independent HAT without in
     assert.throws(() => selectedReview(root, { ...receipt, meaningCompiled: false }))
     assert.throws(() => selectedReview(root, { ...receipt, factualStatus: 'resolved' }))
     if (process.env.ENGINEERING_HAT_REPORT) writeFileSync(process.env.ENGINEERING_HAT_REPORT,
-      JSON.stringify({ complete: true, nativeMeaningCompiled: true, factualStatus: receipt.factualStatus,
+      JSON.stringify({ complete: true, publishedRuntime: release, nativeMeaningCompiled: true, factualStatus: receipt.factualStatus,
         output: actual, staleSelectionRefused: true, authorityGranted: false, remoteWrites: false }, null, 2) + '\n')
   } finally { rmSync(temp, { recursive: true, force: true }) }
 })
