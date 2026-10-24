@@ -44,12 +44,20 @@ codex plugin add coela-engineering@coela-engineering
 ```
 
 Use the actual client's `--help` if its command differs. Discover the plugin in
-the supported client's directory and invoke `$coela-design-review` for a concrete
+the supported client's directory and invoke the discovered Skill for a concrete
 design review. Confirm that the full bundled guidance was used, source edition
 was identified and findings distinguish evidence from unverified behavior.
 Desktop/client reload may be required; CLI metadata parsing alone is not proof
 of actual model task application. The current agent must not launch another
 model agent merely to claim an independent evaluation.
+
+The inspected Codex CLI reports the plugin-qualified invocation name
+`$coela-engineering:coela-design-review`; use the actual host-discovered name.
+`scripts/accept-plugin-client.mts CANDIDATE_DIRECTORY EXPECTED_SOURCE EXPECTED_ARCHIVE_SHA256`
+verifies an admitted archive, installs it into an isolated temporary Codex home,
+starts the existing client's app-server, checks actual Skill discovery and full
+reference bytes, and removes that temporary home/process. No user profile or
+account credentials are copied. This checks loading, not model task application.
 
 Local authoring/installation acceptance, actual task use, public archive
 verification, ChatGPT workspace publication and universal directory listing are
