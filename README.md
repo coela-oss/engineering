@@ -64,3 +64,10 @@ JSON source strings. It performs no network, install, meaning adoption or grant.
 complete generated references and exact provenance. Plugin artifact preparation,
 public-byte verification, client installation and actual task use are separate
 acceptance steps tracked in Engineering #14.
+
+## Interface lifecycle
+
+[Versioned integration definitions and change planning](docs/interface-lifecycle.md)
+validate actual Plugin/Web coverage and report migrations without replacing native
+contracts. Run `ENGINEERING_PORTFOLIO_SOURCE=/admitted/portfolio pnpm verify:lifecycle`
+with the pinned independent checkout; CI retains the machine-readable report.

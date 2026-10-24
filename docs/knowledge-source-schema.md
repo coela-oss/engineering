@@ -189,3 +189,12 @@ Then accept a real semantic term and HAT operation mapping. Introduce no generic
 workflow DSL, new storage engine or universal set manifest. Only migrate existing
 callers after source/schema compatibility and generated output are independently
 verified. No runtime hold, authority or live configuration changes here.
+
+## Interface lifecycle is a separate responsibility
+
+The authoring candidate above does not compare producer/consumer interfaces.
+The [interface lifecycle definition](interface-lifecycle.md) now owns the bounded
+Plugin/Web coverage matrix and before/after structural change plan. It references
+native source fingerprints rather than embedding native contracts or duplicating
+editorial content. Semantic/HAT acceptance remains owner-native and unobserved
+until its independent rollout gate passes.

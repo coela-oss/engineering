@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "id": "coela-engineering-delivery",
+  "version": "1.0.0",
+  "interfaces": [
+    {
+      "id": "portable-plugin",
+      "owner": "https://github.com/coela-oss/engineering",
+      "native_sources": [
+        {
+          "path": "integrations/plugin/plugin.json",
+          "sha256": "d498c44f2ed2c3c2deb0ed9ee7ab87d40c0a6b2ab50adfe408e6f7ddba298fa9"
+        },
+        {
+          "path": "src/plugin.mts",
+          "sha256": "3b096caee2857b32fdbf101d68389c354b0ddef7d2a3f1844dadab92488be355"
+        }
+      ],
+      "identity": [
+        "/name"
+      ],
+      "fields": [
+        {
+          "name": "/$schema",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/version",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/description",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/author/name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/author/url",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/homepage",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/repository",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/license",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "consumers": [
+        {
+          "id": "plugin-package",
+          "owner": "https://github.com/coela-oss/engineering",
+          "fields": [
+            {
+              "name": "/$schema",
+              "support": "required"
+            },
+            {
+              "name": "/name",
+              "support": "required"
+            },
+            {
+              "name": "/version",
+              "support": "required"
+            },
+            {
+              "name": "/description",
+              "support": "required"
+            },
+            {
+              "name": "/author/name",
+              "support": "required"
+            },
+            {
+              "name": "/author/url",
+              "support": "required"
+            },
+            {
+              "name": "/homepage",
+              "support": "required"
+            },
+            {
+              "name": "/repository",
+              "support": "required"
+            },
+            {
+              "name": "/license",
+              "support": "required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "web-guidance",
+      "owner": "https://github.com/coela-oss/engineering",
+      "native_sources": [
+        {
+          "path": "src/content.mts",
+          "sha256": "349c15491d1e5722e68b126ccd257ae8ed7d7e96b14902d26c15103e1e020abc"
+        },
+        {
+          "path": "src/projections.mts",
+          "sha256": "1ec99543e1fd3845a740f35f26c2635f26461ac906f540b332eee6da13b078d2"
+        }
+      ],
+      "identity": [
+        "/contentId"
+      ],
+      "fields": [
+        {
+          "name": "/catalogId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/version",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/catalogSha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/contentId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/contentSha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/locale",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/license",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/attribution",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/source",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/excerpt",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "consumers": [
+        {
+          "id": "portfolio",
+          "owner": "https://github.com/coela-oss/portfolio",
+          "fields": [
+            {
+              "name": "/catalogId",
+              "support": "required"
+            },
+            {
+              "name": "/version",
+              "support": "required"
+            },
+            {
+              "name": "/catalogSha256",
+              "support": "required"
+            },
+            {
+              "name": "/contentId",
+              "support": "required"
+            },
+            {
+              "name": "/contentSha256",
+              "support": "required"
+            },
+            {
+              "name": "/locale",
+              "support": "required"
+            },
+            {
+              "name": "/license",
+              "support": "required"
+            },
+            {
+              "name": "/attribution",
+              "support": "required"
+            },
+            {
+              "name": "/source",
+              "support": "required"
+            },
+            {
+              "name": "/title",
+              "support": "required"
+            },
+            {
+              "name": "/excerpt",
+              "support": "required"
+            }
+          ],
+          "revision": "79f9c73596bd288b66d3e72ffbc22a382ee0c21b",
+          "native_sources": [
+            {
+              "path": "site/guidance.mts",
+              "sha256": "33d7a24390ea8f236ac4c3bd3a917697ddf90ea5c0e6f1c4de5986308c4c0474"
+            },
+            {
+              "path": "site/guidance.json",
+              "sha256": "73fb5afc23074dcfd62a44d7a8763d5d637bada1d2111b8cda3b3e7cbbaa8664"
+            },
+            {
+              "path": "third-party/engineering/provenance.json",
+              "sha256": "b8704bb09c38b608b230cc15149b656d383e5a639d4e367125226c1536218b5f"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
