@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "coela-engineering",
+  "version": "0.1.0",
+  "description": "Review software design using Coela's versioned engineering guidance and explicit evidence.",
+  "author": { "name": "Coela", "url": "https://coela.org" },
+  "homepage": "https://coela.org/about/principles",
+  "repository": "https://github.com/coela-oss/engineering",
+  "license": "MIT AND CC-BY-4.0"
+}
