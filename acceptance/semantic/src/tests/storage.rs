@@ -88,5 +88,10 @@ fn missing_storage_is_not_initialized_by_read_and_unknown_binding_references_fai
         revision: "substituted".into(),
         ..reference
     };
-    assert!(bindings::resolve(&repo, NAMESPACE, &invalid).is_err());
+    assert!(
+        bindings::resolve(&repo, NAMESPACE, &invalid)
+            .unwrap()
+            .is_empty()
+    );
+    assert!(definitions::read_revision(&repo, NAMESPACE, "substituted").is_err());
 }
