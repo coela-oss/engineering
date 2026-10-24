@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "coela-engineering-delivery",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "interfaces": [
     {
       "id": "portable-plugin",
@@ -480,6 +480,153 @@
             },
             {
               "name": "/_meta/zixcel~1classification",
+              "support": "required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hat-evidence-review",
+      "owner": "https://github.com/coela-oss/engineering",
+      "native_sources": [
+        {
+          "path": "src/hat-review.mts",
+          "sha256": "f1584046d3bf7294cf2d2dcd15897c48a35782512f7fffd82f7c6ffcf526078d"
+        }
+      ],
+      "identity": [
+        "/scope_ref",
+        "/subject_ref",
+        "/stage"
+      ],
+      "fields": [
+        {
+          "name": "/schema",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/scope_ref",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/revision",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "/semantic/module_sha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/semantic/term_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/semantic/definition_revision",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/authority_granted",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "/subject_ref",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/stage",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/kind",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/evidence_sha256",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "consumers": [
+        {
+          "id": "software-architect",
+          "owner": "https://github.com/hathq/hat-software-architect",
+          "revision": "02d0681507b13e0bdaf4c26341db0e2b8b076cc2",
+          "native_sources": [
+            {
+              "path": "src/review/model.rs",
+              "sha256": "e6183e3222e976905b30d6af1a75a7c9054a5c5e4ba61668c63cfe33c4d88f8e"
+            },
+            {
+              "path": "src/review/mod.rs",
+              "sha256": "fda412bed5e489f9fe6d1d0041a12f38a30dfcf0e888ab6d4f47af7e1c81335d"
+            },
+            {
+              "path": "src/review/validate.rs",
+              "sha256": "75048448371cc6e7ec10de3fc30c809b92688f6c8850518d90e05f246db0a0a8"
+            },
+            {
+              "path": "schemas/review-architecture-boundary-input-v2.schema.json",
+              "sha256": "05ea39914481be695ef39fcef64f35a627f1d8a44b8f7abd635bef19284f984b"
+            },
+            {
+              "path": "schemas/review-architecture-boundary-output-v2.schema.json",
+              "sha256": "14e3cb86e7b4e935b1c356f8da286b0fb6efa0730d6c065802d347eddd0f8412"
+            }
+          ],
+          "fields": [
+            {
+              "name": "/schema",
+              "support": "required"
+            },
+            {
+              "name": "/scope_ref",
+              "support": "required"
+            },
+            {
+              "name": "/revision",
+              "support": "required"
+            },
+            {
+              "name": "/semantic/module_sha256",
+              "support": "required"
+            },
+            {
+              "name": "/semantic/term_id",
+              "support": "required"
+            },
+            {
+              "name": "/semantic/definition_revision",
+              "support": "required"
+            },
+            {
+              "name": "/authority_granted",
+              "support": "required"
+            },
+            {
+              "name": "/subject_ref",
+              "support": "required"
+            },
+            {
+              "name": "/stage",
+              "support": "required"
+            },
+            {
+              "name": "/kind",
+              "support": "required"
+            },
+            {
+              "name": "/evidence_sha256",
               "support": "required"
             }
           ]
