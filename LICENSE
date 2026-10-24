@@ -2,7 +2,8 @@
 
 Copyright 2026 Coela.
 
-Original prose in README.md, content/ and documentation in integrations/:
+Original prose in README.md, content/, native .sem definitions in integrations/semantic/
+and documentation in integrations/:
 Creative Commons Attribution 4.0 International (CC-BY-4.0).
 Original editorial metadata and text in datasets/ use the same license to the
 extent copyright or database rights apply. Facts are not asserted to acquire

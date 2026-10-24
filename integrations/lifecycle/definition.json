@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "coela-engineering-delivery",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "interfaces": [
     {
       "id": "portable-plugin",
@@ -247,6 +247,131 @@
             {
               "path": "third-party/engineering/provenance.json",
               "sha256": "b8704bb09c38b608b230cc15149b656d383e5a639d4e367125226c1536218b5f"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "semantic-source-selection",
+      "owner": "https://github.com/coela-oss/engineering",
+      "native_sources": [
+        {
+          "path": "src/semantic.mts",
+          "sha256": "fa535683eeb464eaa2b2c40f6aaaf1039c4c715b50f0fb33b7687d89692fb4cf"
+        },
+        {
+          "path": "integrations/semantic/source.json",
+          "sha256": "0bcae88835062acd2033a8aa14a95c3a442a3c7b0232bfb909f07dc157bd27ce"
+        },
+        {
+          "path": "integrations/semantic/evidence.sem",
+          "sha256": "6736c2fc5fc6819f2baa9b403362b1b6873600f0abb96ae37ae2b10f723116da"
+        }
+      ],
+      "identity": [
+        "/id"
+      ],
+      "fields": [
+        {
+          "name": "/id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/version",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/moduleSha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/contentId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/contentVersion",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/contentSha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/catalogSha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/termName",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "consumers": [
+        {
+          "id": "pinned-sem-lang-consumer",
+          "owner": "https://github.com/coela-oss/engineering",
+          "native_sources": [
+            {
+              "path": "acceptance/semantic/Cargo.toml",
+              "sha256": "4c2a03dd5e27ef36015e03dc6a27027ca9886f275eb448ddc926ef9b91fb1846"
+            },
+            {
+              "path": "acceptance/semantic/Cargo.lock",
+              "sha256": "456bff66232bd9565b1824e71ad085a472b164ddb953b249a1d3fe1a327c4723"
+            },
+            {
+              "path": "acceptance/semantic/src/lib.rs",
+              "sha256": "0b04e0f1dbb7ac331f89e53e0d7e7f29b6ed0c532e437c040f7e7089a6686829"
+            },
+            {
+              "path": "acceptance/semantic/src/source.rs",
+              "sha256": "33c11f37baf8a2a0727e5cba0098929ad37e0e31bcfc04ec0493adc9acc3d3b0"
+            },
+            {
+              "path": "acceptance/semantic/src/surface.rs",
+              "sha256": "db2a5c4e8dcd107e093546a95acb977efd6085c4b7db624f0d209f6d827e010d"
+            }
+          ],
+          "fields": [
+            {
+              "name": "/id",
+              "support": "required"
+            },
+            {
+              "name": "/version",
+              "support": "required"
+            },
+            {
+              "name": "/moduleSha256",
+              "support": "required"
+            },
+            {
+              "name": "/contentId",
+              "support": "required"
+            },
+            {
+              "name": "/contentVersion",
+              "support": "required"
+            },
+            {
+              "name": "/contentSha256",
+              "support": "required"
+            },
+            {
+              "name": "/catalogSha256",
+              "support": "required"
+            },
+            {
+              "name": "/termName",
+              "support": "required"
             }
           ]
         }
