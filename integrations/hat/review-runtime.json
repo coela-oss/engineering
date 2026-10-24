@@ -1,0 +1,8 @@
+{
+  "version": "0.11.0",
+  "source": "4a8025d4a2fef8777e104bdbfd5b1da61c9911aa",
+  "url": "https://github.com/hathq/hat-software-architect/releases/download/hat%2Fv0.11.0/hat-distribution-linux-x86_64.tar.gz",
+  "archiveSha256": "d96a89f1bbc639b0f3d9510af10669ba08db42ac5a9f8b14d1bfbd533aad11d9",
+  "binaryPath": "bin/hat-software-architect-worker",
+  "binarySha256": "20b68b139f43cd037eeaa58fb6984c654c42679e20e9260a4ab3fd0b6d1533db"
+}

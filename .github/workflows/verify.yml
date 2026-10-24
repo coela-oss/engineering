@@ -66,12 +66,35 @@ jobs:
           cargo +1.97.1 install --path "$RUNNER_TEMP/mcp-published-source/zixcel-mcp-gateway-0.2.0" --locked --debug --root "$RUNNER_TEMP/mcp-gateway-install"
           "$RUNNER_TEMP/mcp-gateway-install/bin/zixcel-mcp-gateway" validate-config --config integrations/mcp/public.toml
           ENGINEERING_MCP_BINARY="$RUNNER_TEMP/mcp-gateway-install/bin/zixcel-mcp-gateway" pnpm test:mcp
+      - name: Read published HAT source fingerprints
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hathq/hat-software-architect
+          ref: 4a8025d4a2fef8777e104bdbfd5b1da61c9911aa
+          path: .hat-source
+          persist-credentials: false
+      - name: Admit exact published HAT runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s test -p 'hat_runtime_test.py'
+          url=$(node -p "JSON.parse(require('fs').readFileSync('integrations/hat/review-runtime.json')).url")
+          curl --fail --location --silent --show-error --max-time 60 --max-filesize 8388608 "$url" --output "$RUNNER_TEMP/hat-release.tar.gz"
+          python3 scripts/prepare-hat-runtime.py "$RUNNER_TEMP/hat-release.tar.gz" "$RUNNER_TEMP/hat-runtime"
+      - name: Accept actual native receipt through independent HAT proposals
+        env:
+          ENGINEERING_SEMANTIC_BINARY: ${{ runner.temp }}/coela-semantic-target/debug/coela-semantic-consumer
+          ENGINEERING_HAT_BINARY: ${{ runner.temp }}/hat-runtime/hat-software-architect-worker
+          ENGINEERING_HAT_REPORT: ${{ runner.temp }}/hat-review-acceptance.json
+        run: node --test test/hat-review.mts
       - name: Verify interface lifecycle against actual Plugin and independent Portfolio
         id: lifecycle
         env:
           ENGINEERING_PORTFOLIO_SOURCE: ${{ github.workspace }}/.portfolio-source
           ENGINEERING_MCP_BINARY: ${{ runner.temp }}/mcp-gateway-install/bin/zixcel-mcp-gateway
           ENGINEERING_SEMANTIC_BINARY: ${{ runner.temp }}/coela-semantic-target/debug/coela-semantic-consumer
+          ENGINEERING_HAT_REPORT: ${{ runner.temp }}/hat-review-acceptance.json
+          ENGINEERING_HAT_SOURCE: ${{ github.workspace }}/.hat-source
           LIFECYCLE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: node scripts/verify-lifecycle.mts --base "$LIFECYCLE_BASE" > "$RUNNER_TEMP/interface-lifecycle-report.json"
       - name: Retain interface coverage and change plan
@@ -82,6 +105,7 @@ jobs:
           path: |
             ${{ runner.temp }}/interface-lifecycle-report.json
             ${{ runner.temp }}/native-semantic-acceptance.json
+            ${{ runner.temp }}/hat-review-acceptance.json
           if-no-files-found: error
       - name: Package immutable plugin candidate
         run: pnpm package:plugin "$RUNNER_TEMP/coela-engineering-plugin"

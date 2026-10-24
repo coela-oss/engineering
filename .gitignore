@@ -8,3 +8,5 @@
 /.portfolio-source/
 
 /acceptance/semantic/target/
+/.hat-source/
+__pycache__/
