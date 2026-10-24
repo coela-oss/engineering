@@ -58,8 +58,8 @@ try {
   const input = semanticInput(root), inputPath = join(temp, 'semantic-input.json')
   writeFileSync(inputPath, JSON.stringify(input), { flag: 'wx', mode: 0o600 })
   const native = parseKnowledgeJson(execFileSync(binary, [inputPath], { ...options, encoding: 'buffer', timeout: 20000 })) as {
-    projection: unknown; storageReopened: boolean; implicitBindings: number; runtimeClaims: number; authorityGranted: boolean }
-  if (!native || native.storageReopened !== true || native.implicitBindings !== 0 || native.runtimeClaims !== 0 || native.authorityGranted !== false) throw Error('Incomplete native semantic acceptance')
+    projection: unknown; meaningCompiled: boolean; factualStatus: string; storageReopened: boolean; implicitBindings: number; runtimeClaims: number; authorityGranted: boolean }
+  if (!native || native.meaningCompiled !== true || native.factualStatus !== 'needs-evidence' || native.storageReopened !== true || native.implicitBindings !== 0 || native.runtimeClaims !== 0 || native.authorityGranted !== false) throw Error('Incomplete native semantic acceptance')
   observations.push({ interface: 'semantic-source-selection', records: [input.projection] },
     { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [native.projection] })
   const findings = inspectCoverage(d, observations, read)

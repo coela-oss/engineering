@@ -26,8 +26,10 @@ The standalone `acceptance/semantic` crate uses an exact public sem-lang Git rev
 not path substitution, copied compiler/schema code or a model-generated mock.
 It compiles the authored source with the bundled native standard definitions,
 explicitly adopts it in a new private temporary test store, verifies replay/CAS,
-checkpoints, drops and reopens storage, restores the engine and resolves both
-surfaces against the exact adopted revision. Native source/meaning/dependency errors,
+checkpoints, drops and reopens storage, restores the engine and compiles both
+surfaces to the same exact adopted meaning. With no asserted facts, the runtime
+correctly returns NeedsResolution/MissingContext; knowing the category is not
+evidence that an implementation exists or works. Native source/meaning/dependency errors,
 unknown phrases, stale context, conflicting adoption and missing storage are tested.
 No HAT binding is adopted and no runtime claim or execution grant is generated.
 The fixed test adoption decision does not approve any user's runtime definition.

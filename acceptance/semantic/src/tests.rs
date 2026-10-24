@@ -23,7 +23,8 @@ fn real_native_compile_adopt_persist_reopen_and_bilingual_resolution_grants_noth
         receipt.term_id,
         TermId::from_declaration("coela/engineering/evidence", "ImplementationEvidence").to_hex()
     );
-    assert!(receipt.storage_reopened);
+    assert!(receipt.storage_reopened && receipt.meaning_compiled);
+    assert_eq!(receipt.factual_status, "needs-evidence");
     assert_eq!(receipt.runtime_claims, 0);
     assert_eq!(receipt.implicit_bindings, 0);
     assert!(!receipt.authority_granted);
