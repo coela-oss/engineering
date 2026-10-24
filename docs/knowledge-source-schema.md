@@ -7,7 +7,8 @@ small Coela-owned authoring/composition envelope, not a new ecosystem language.
 It names one guidance, case study or human/model procedure and selects its
 immutable sources. It does not replace the current content catalog, official
 plugin manifests, sem-lang documents or HatSpec contracts. It has no published
-schema URL, production loader or semantic conversion acceptance yet.
+schema URL, stable production contract or semantic conversion acceptance yet.
+The bounded candidate source resolver below is source-tooling acceptance only.
 
 Candidate fixtures under `examples/knowledge-units/` demonstrate migration from
 the current Engineering and Portfolio sources. They are not new independently
@@ -128,9 +129,46 @@ do not make the two base packages depend on each other's deployment state.
 
 ## Validation boundaries and rollout
 
+### Repeatable candidate source acceptance
+
+Source tooling 0.1.2 uses Ajv's Draft 2020-12 validator and Microsoft's
+jsonc-parser visitor (strict JSON mode, error list/duplicate/depth checks), rather
+than implementing a schema evaluator or JSON parser. `src/knowledge.mts` adds
+cross-reference/default-locale/identity/bounds checks. All Engineering snapshot
+validation goes through the existing `readGuidanceFromSource` implementation.
+
+`src/local-snapshot.mts` accepts explicit already-trusted local Git roots. It
+checks repository origin, exact commit/file mode and size, then reads immutable
+Git objects with bounded output/time; it does not read the mutable worktree,
+discover accounts, fetch, checkout, install or store trust. It is not a sandbox
+against an attacker controlling an admitted root or the Git executable.
+
+Run with the supported Node version and existing accepted Portfolio checkout:
+
+```sh
+ENGINEERING_PORTFOLIO_SOURCE=/absolute/path/to/portfolio pnpm verify:knowledge
+ENGINEERING_PORTFOLIO_SOURCE=/absolute/path/to/portfolio pnpm test
+pnpm typecheck
+```
+
+CI checks out the exact public Portfolio fixture revision and runs the same
+entrypoint and tests, including malformed/reference/changed-byte/depth/size
+refusals. Missing real Portfolio configuration fails; it is not silently skipped.
+No Nuxt/browser/Rust build is performed by this local source verification.
+The original content catalog/release 0.2.4 and MCP v1 projection are unchanged.
+
+The result is explicitly `source-resolved-only`: no semantic source is admitted
+as ready knowledge without its owner validation (`semantic-source` currently
+stops before reads), and no plugin invocation, semantic adoption or HAT execution
+is inferred. `related_units` is returned as navigation, not eagerly traversed.
+Artifact licenses/trust remain upstream responsibilities and must be included in
+distribution acceptance before the resolved data is packaged or presented.
+
 The schema checks closed object shape, enums, reference alternatives, fixed
 revision/digest syntax, nonblank literals and JSON Pointer syntax. It cannot
-prove the following, which remain required before production:
+prove the following alone. Candidate source resolution implements the structural
+and referential checks below; owner semantic validation and product/installation
+acceptance remain required before production:
 
 - Duplicate source IDs/locales and a missing default localization must fail.
 - Resolve only selected admitted artifacts. Verify the complete file hash before

@@ -1,16 +1,24 @@
 {
   "name": "@coela/engineering-source",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "license": "MIT",
   "packageManager": "pnpm@10.29.3",
-  "engines": { "node": ">=24.22.1 <25" },
+  "engines": {
+    "node": ">=24.22.1 <25"
+  },
   "scripts": {
+    "verify:knowledge": "node scripts/verify-knowledge.mts",
     "verify:content": "node scripts/verify-content.mts",
     "test": "node --test test/*.test.mts",
     "test:mcp": "node --test test/mcp-consumer.mts",
     "typecheck": "tsc --noEmit"
   },
-  "devDependencies": { "@types/node": "24.19.2", "typescript": "5.9.3" }
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "ajv": "8.20.0",
+    "jsonc-parser": "3.3.1",
+    "typescript": "5.9.3"
+  }
 }
