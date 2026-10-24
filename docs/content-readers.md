@@ -24,7 +24,7 @@ Raw input/path/OS details are not printed by either CLI on failure.
 ## Excerpt and navigation projection
 
 `websiteExcerpt` returns the same selection, locale, license, attribution,
-immutable source URL and the first complete sentence of the first non-heading, non-status paragraph,
+immutable source URL, the document’s sole top-level heading as `title`, and the first complete sentence of the first non-heading, non-status paragraph,
 limited to 160 UTF-8 bytes. A longer sentence ends with an ellipsis rather than
 pretending to be complete.
 Whitespace is normalized; excerpts are plain text, never HTML. The portfolio can
@@ -80,3 +80,23 @@ standard Git archiver and hashes the archive as a stream. No package manager,
 credentials, model or network access is needed. Publication is a separate owner
 operation after anonymous source/archive checks. This release is content-only;
 it does not distribute a signed HAT, install a service or grant execution.
+
+## Web projection release
+
+`node scripts/package-web.mts NEW_DIRECTORY` packages the existing reader,
+projection, catalog/selections, full documents and licenses from clean tracked
+source. The Web format has its own version 0.1.0 and release tag `web/v0.1.0`;
+content 0.2.4 and plugin 0.1.0 remain immutable. A missing, multiple or oversized
+H1 is rejected; titles are plain text rendered by Vue interpolation, not HTML.
+Content IDs identify selections, never presentation categories. The candidate
+knowledge-unit envelope remains a separate experimental interface; this release
+does not promote it or require Ajv/Git/network in a website runtime.
+
+The archive contains a complete offline projection closure. `release.json`
+records every source-file hash, exact commit, archive digest, content selections
+and generated rows. Consumers verify an independently admitted release digest,
+then compare all files and regenerate the rows using this reader. The receipt
+alone is not publisher trust. No executable install hook or runtime fetch is
+needed. Portfolio’s update command consumes this release rather than executing
+a mutable checkout. Site-specific navigation, labels and case stories remain
+with Portfolio.
