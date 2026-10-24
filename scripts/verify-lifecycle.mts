@@ -9,6 +9,8 @@ import { parseKnowledgeJson } from '../src/knowledge.mts'
 import { parseDefinition, inspectCoverage, compareDefinitions, type NativeRead } from '../src/lifecycle.mts'
 import { localSnapshotReader } from '../src/local-snapshot.mts'
 import { packagePlugin } from '../src/plugin.mts'
+import { publicDocuments } from '../src/mcp-documents.mts'
+import { observePublicDocuments } from '../src/mcp-observation.mts'
 import { semanticInput } from '../src/semantic.mts'
 import { websiteExcerpt } from '../src/projections.mts'
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -62,6 +64,10 @@ try {
   if (!native || native.meaningCompiled !== true || native.factualStatus !== 'needs-evidence' || native.storageReopened !== true || native.implicitBindings !== 0 || native.runtimeClaims !== 0 || native.authorityGranted !== false) throw Error('Incomplete native semantic acceptance')
   observations.push({ interface: 'semantic-source-selection', records: [input.projection] },
     { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [native.projection] })
+  const mcpBinary = process.env.ENGINEERING_MCP_BINARY
+  if (!mcpBinary || !mcpBinary.startsWith('/')) throw Error('Explicit shared MCP binary required')
+  observations.push({ interface: 'mcp-public-document', records: publicDocuments(root) },
+    { interface: 'mcp-public-document', consumer: 'zixcel-stdio-client', records: observePublicDocuments(root, mcpBinary) })
   const findings = inspectCoverage(d, observations, read)
   console.log(JSON.stringify({ kind: 'coela-interface-lifecycle-report', schema_version: 1,
     source, definition: { id: d.id, version: d.version, sha256: sha256(readFileSync(join(root, definitionPath))) },
