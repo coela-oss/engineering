@@ -25,6 +25,28 @@ The authoritative Hatter local architecture remains the workspace's
 plan. This roadmap does not replace those authorities. Public owner issues have
 links to the relevant integration, not private runtime state.
 
+## Lifecycle gate added on 2026-10-24
+
+K1 (source admission), K2 (Plugin delivery) and K3 (Portfolio production) are
+accepted in their owner Issues #13/#14 and coela-oss/portfolio#18. Their historical
+impact table above records the original audit, not outstanding implementation.
+
+Before expanding to K4/K5/M1, [Engineering #19](https://github.com/coela-oss/engineering/issues/19)
+adds the [interface lifecycle definition](interface-lifecycle.md): native source
+fingerprints, explicit producer/consumer coverage, independent observations and
+an old/new change plan. Actual portable Plugin and Portfolio Web are the first
+accepted scope; semantic/HAT/MCP full-document paths are not implicitly accepted.
+Each later owner must add its actual interface inventory and required/optional/
+excluded mapping, run native validators and independent consumers, review the
+change report, and complete release/caller acceptance before closing its Issue.
+An omitted/unobserved mapping is not a passed capability. This is a planning gate,
+not an ecosystem-wide runtime dependency or another authorization service.
+
+The next active dependency order is K4 sem-lang producer/consumer → K5 existing
+HAT/Contract acceptance. M1 full-document MCP is independent and optional. Real
+Hatter runtime, signing/origin activation and held host/isolation acceptance retain
+their existing constraints; none is bypassed by the structural coverage report.
+
 ## Dependency order
 
 1. **K1 — bounded source admission:** schema plus referential checks, standard
