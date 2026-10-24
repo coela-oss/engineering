@@ -1,5 +1,6 @@
 use super::*;
 use sem_lang_memory::bindings::{self, DefinitionRef};
+use sem_lang_repository::HeadStore;
 #[test]
 fn conflicting_definitions_and_stale_decisions_do_not_mutate_adopted_meaning() {
     let temp = scratch();
@@ -93,5 +94,5 @@ fn missing_storage_is_not_initialized_by_read_and_unknown_binding_references_fai
             .unwrap()
             .is_empty()
     );
-    assert!(definitions::read_revision(&repo, NAMESPACE, "substituted").is_err());
+    assert!(definitions::read_revision(&repo, NAMESPACE, &invalid.revision).is_err());
 }
