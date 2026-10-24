@@ -52,10 +52,15 @@ TypeScript reader, immutable content source links, exact snapshot selections and
 owner-generated website/MCP excerpt projections. `node scripts/project-guidance.mts
 website` prints the website projection; use `mcp` for the shared gateway TOML.
 This source tooling is private-to-registry (`private: true`), not a new npm package.
-The catalog version (0.2.4) is separate from tooling (0.1.2) and the HAT declaration
+The catalog version (0.2.4) is separate from tooling (0.1.3) and the HAT declaration
 (0.1.0); none is an installable signed HAT package.
 
 For candidate knowledge-unit source acceptance, explicitly provide an accepted
 Portfolio checkout: `ENGINEERING_PORTFOLIO_SOURCE=/absolute/path/to/portfolio pnpm
 verify:knowledge`. This reuses the canonical guidance reader and resolves pinned
 JSON source strings. It performs no network, install, meaning adoption or grant.
+
+[Plugin delivery](docs/plugin-delivery.md) packages one design-review Skill with
+complete generated references and exact provenance. Plugin artifact preparation,
+public-byte verification, client installation and actual task use are separate
+acceptance steps tracked in Engineering #14.

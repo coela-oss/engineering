@@ -1,6 +1,6 @@
 {
   "name": "@coela/engineering-source",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -10,6 +10,7 @@
   },
   "scripts": {
     "verify:knowledge": "node scripts/verify-knowledge.mts",
+    "package:plugin": "node scripts/package-plugin.mts",
     "verify:content": "node scripts/verify-content.mts",
     "test": "node --test test/*.test.mts",
     "test:mcp": "node --test test/mcp-consumer.mts",

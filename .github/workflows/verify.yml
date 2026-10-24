@@ -40,6 +40,17 @@ jobs:
           pnpm typecheck
           pnpm test
           pnpm verify:knowledge
+      - name: Package immutable plugin candidate
+        run: pnpm package:plugin "$RUNNER_TEMP/coela-engineering-plugin"
+      - name: Retain plugin candidate and source evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: coela-engineering-plugin-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/coela-engineering-plugin/*.tar
+            ${{ runner.temp }}/coela-engineering-plugin/release.json
+            ${{ runner.temp }}/coela-engineering-plugin/SHA256SUMS
+          if-no-files-found: error
       - name: Check public content identity and digests
         shell: bash
         run: bash scripts/verify-content.sh
