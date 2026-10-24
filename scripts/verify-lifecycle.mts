@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -9,6 +9,7 @@ import { parseKnowledgeJson } from '../src/knowledge.mts'
 import { parseDefinition, inspectCoverage, compareDefinitions, type NativeRead } from '../src/lifecycle.mts'
 import { localSnapshotReader } from '../src/local-snapshot.mts'
 import { packagePlugin } from '../src/plugin.mts'
+import { semanticInput } from '../src/semantic.mts'
 import { websiteExcerpt } from '../src/projections.mts'
 const root = fileURLToPath(new URL('..', import.meta.url))
 const definitionPath = 'integrations/lifecycle/definition.json'
@@ -52,12 +53,21 @@ try {
     { interface: 'web-guidance', records: readSelections(root).map(s => websiteExcerpt(root, s)) },
     { interface: 'web-guidance', consumer: 'portfolio', records },
   ]
+  const binary = process.env.ENGINEERING_SEMANTIC_BINARY
+  if (!binary || !binary.startsWith('/')) throw Error('Explicit compiled native semantic consumer required')
+  const input = semanticInput(root), inputPath = join(temp, 'semantic-input.json')
+  writeFileSync(inputPath, JSON.stringify(input), { flag: 'wx', mode: 0o600 })
+  const native = parseKnowledgeJson(execFileSync(binary, [inputPath], { ...options, encoding: 'buffer', timeout: 20000 })) as {
+    projection: unknown; meaningCompiled: boolean; factualStatus: string; storageReopened: boolean; implicitBindings: number; runtimeClaims: number; authorityGranted: boolean }
+  if (!native || native.meaningCompiled !== true || native.factualStatus !== 'needs-evidence' || native.storageReopened !== true || native.implicitBindings !== 0 || native.runtimeClaims !== 0 || native.authorityGranted !== false) throw Error('Incomplete native semantic acceptance')
+  observations.push({ interface: 'semantic-source-selection', records: [input.projection] },
+    { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [native.projection] })
   const findings = inspectCoverage(d, observations, read)
   console.log(JSON.stringify({ kind: 'coela-interface-lifecycle-report', schema_version: 1,
     source, definition: { id: d.id, version: d.version, sha256: sha256(readFileSync(join(root, definitionPath))) },
     baseline, comparison: before ? 'compared' : 'initial-review-required', changes,
     observations: observations.map(o => ({ interface: o.interface, consumer: o.consumer ?? null, records: o.records.length })),
-    pluginCandidateSha256: receipt.archive.sha256, findings, complete: findings.length === 0,
+    pluginCandidateSha256: receipt.archive.sha256, nativeSemanticAcceptance: native, findings, complete: findings.length === 0,
     scope: 'object-leaf-projection-coverage-only', semanticAcceptance: false, authorityGranted: false, remoteWrites: false }, null, 2))
   if (findings.length) process.exitCode = 1
 } finally { rmSync(temp, { recursive: true, force: true }) }

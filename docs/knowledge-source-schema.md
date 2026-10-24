@@ -198,3 +198,8 @@ Plugin/Web coverage matrix and before/after structural change plan. It reference
 native source fingerprints rather than embedding native contracts or duplicating
 editorial content. Semantic/HAT acceptance remains owner-native and unobserved
 until its independent rollout gate passes.
+
+The [native semantic source adapter](semantic-delivery.md) separately compiles
+and explicitly adopts one selected Coela module in a temporary acceptance store.
+Its receipt is not a general exemption from the candidate resolver refusal,
+implicit semantic adoption or a runtime execution grant.

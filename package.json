@@ -1,6 +1,6 @@
 {
   "name": "@coela/engineering-source",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -16,7 +16,9 @@
     "test:mcp": "node --test test/mcp-consumer.mts",
     "typecheck": "tsc --noEmit",
     "package:web": "node scripts/package-web.mts",
-    "verify:lifecycle": "node scripts/verify-lifecycle.mts"
+    "verify:lifecycle": "node scripts/verify-lifecycle.mts",
+    "prepare:semantic": "node scripts/prepare-semantic.mts",
+    "package:semantic": "node scripts/package-semantic.mts"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

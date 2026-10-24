@@ -6,8 +6,8 @@ The current instance is [`integrations/lifecycle/definition.json`](../integratio
 It describes structural obligations between actual Engineering delivery projections
 and their consumers. It does not replace the knowledge-unit authoring schema,
 portable Plugin manifest, sem-lang language, HatSpec Contract or permission rules.
-The implementation is source-private tooling 0.1.5, with its own definition version
-1.0.0. Existing content 0.2.4, Plugin 0.1.0 and Web 0.1.0 stay immutable.
+The implementation is source-private tooling 0.1.6, with its own definition version
+1.1.0. Existing content 0.2.4, Plugin 0.1.0 and Web 0.1.0 stay immutable.
 
 ## Author once; observe independently
 
@@ -90,10 +90,19 @@ grants authority or issues remote writes. Unknown/unobserved results fail covera
 semantic equivalence, security impact and release approval remain owner decisions.
 Existing sem-lang/HAT/host test holds are unchanged.
 
+## Native semantic source acceptance
+
+The 1.1.0 definition adds an actual native source selection and pinned standalone
+sem-lang consumer; see [semantic delivery](semantic-delivery.md). Its report is
+separate from structural coverage. Set `ENGINEERING_SEMANTIC_BINARY` to the explicit
+compiled consumer when running the lifecycle CLI. It uses a private temporary test
+store, not an existing user runtime or default Hatter definition package.
+
 ## Expansion gate
 
-Before K4/K5/M1, add the actual owner-native producer/consumer observations and
-corresponding native validators. Until then their acceptance is **not observed**, not
-implicitly covered by the two successful interfaces here. Reforge may reuse this
+The native Coela source slice adds its own compiler/adoption/storage evidence.
+Before K5/M1, add their actual owner-native observations and validators. HAT binding,
+execution authority and full-document MCP acceptance remain **not observed**; neither
+Plugin/Web coverage nor this semantic source slice certifies them. Reforge may reuse this
 method where appropriate, but its AST/DAS/runtime coverage belongs to vpremises;
 this Coela definition is not a mandatory ecosystem-wide runtime dependency.

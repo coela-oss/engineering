@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { parseDefinition, inspectCoverage, compareDefinitions, type Definition, type Observation } from '../src/lifecycle.mts'
 import { readSelections } from '../src/content.mts'
+import { semanticInput } from '../src/semantic.mts'
 import { websiteExcerpt } from '../src/projections.mts'
 const root = fileURLToPath(new URL('..', import.meta.url))
 const raw = readFileSync(new URL('../integrations/lifecycle/definition.json', import.meta.url))
@@ -16,10 +17,12 @@ const fixture = (): Observation[] => {
   const manifest = JSON.parse(readFileSync(new URL('../integrations/plugin/plugin.json', import.meta.url), 'utf8'))
   const rows = readSelections(root).map(s => websiteExcerpt(root, s))
   return [{ interface: 'portable-plugin', records: [manifest] }, { interface: 'portable-plugin', consumer: 'plugin-package', records: [structuredClone(manifest)] },
-    { interface: 'web-guidance', records: rows }, { interface: 'web-guidance', consumer: 'portfolio', records: structuredClone(rows) }]
+    { interface: 'web-guidance', records: rows }, { interface: 'web-guidance', consumer: 'portfolio', records: structuredClone(rows) },
+    { interface: 'semantic-source-selection', records: [semanticInput(root).projection] },
+    { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [structuredClone(semanticInput(root).projection)] }]
 }
 const codes = (d: Definition, o = fixture()) => inspectCoverage(d, o, read).map(f => f.code)
-const next = () => { const d = definition(); d.version = '1.1.0'; return d }
+const next = () => { const d = definition(); d.version = d.version.split('.').map((part, index) => index === 2 ? String(Number(part) + 1) : part).join('.'); return d }
 test('actual producer projections cover all declared fields; external evidence remains unobserved locally', () => {
   const findings = inspectCoverage(definition(), fixture(), read)
   assert.ok(findings.every(f => f.code === 'native_source_unobserved' && f.consumer === 'portfolio'))

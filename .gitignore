@@ -6,3 +6,5 @@
 /.hathq-validator/
 /.mcp-gateway/
 /.portfolio-source/
+
+/acceptance/semantic/target/
