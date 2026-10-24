@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { parseDefinition, inspectCoverage, compareDefinitions, type Definition, type Observation } from '../src/lifecycle.mts'
 import { readSelections } from '../src/content.mts'
+import { expectedReview, reviewRecords, type NativeReceipt } from '../src/hat-review.mts'
 import { publicDocuments } from '../src/mcp-documents.mts'
 import { semanticInput } from '../src/semantic.mts'
 import { websiteExcerpt } from '../src/projections.mts'
@@ -14,6 +15,12 @@ const definition = () => parseDefinition(raw)
 const parse = (d: unknown) => parseDefinition(Buffer.from(JSON.stringify(d)))
 const read = (_owner: string, path: string) => readFileSync(new URL(`../${path}`, import.meta.url))
 // Owner-source unit fixtures; actual packaged Plugin and independent Portfolio run in verify:lifecycle.
+const nativeFixture: NativeReceipt = {
+  projection: { moduleSha256: semanticInput(root).projection.moduleSha256 },
+  termId: '737c04107b2d09fe17a865a3c9b4718f', definitionRevision: 'definitions-' + '0'.repeat(64),
+  meaningCompiled: true, storageReopened: true, factualStatus: 'needs-evidence',
+  authorityGranted: false, implicitBindings: 0, runtimeClaims: 0,
+}
 const fixture = (): Observation[] => {
   const manifest = JSON.parse(readFileSync(new URL('../integrations/plugin/plugin.json', import.meta.url), 'utf8'))
   const rows = readSelections(root).map(s => websiteExcerpt(root, s))
@@ -22,13 +29,15 @@ const fixture = (): Observation[] => {
     { interface: 'semantic-source-selection', records: [semanticInput(root).projection] },
     { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [structuredClone(semanticInput(root).projection)] },
     { interface: 'mcp-public-document', records: publicDocuments(root) },
-    { interface: 'mcp-public-document', consumer: 'zixcel-stdio-client', records: structuredClone(publicDocuments(root)) }]
+    { interface: 'mcp-public-document', consumer: 'zixcel-stdio-client', records: structuredClone(publicDocuments(root)) },
+    { interface: 'hat-evidence-review', records: reviewRecords(expectedReview(root, nativeFixture)) },
+    { interface: 'hat-evidence-review', consumer: 'software-architect', records: structuredClone(reviewRecords(expectedReview(root, nativeFixture))) }]
 }
 const codes = (d: Definition, o = fixture()) => inspectCoverage(d, o, read).map(f => f.code)
 const next = () => { const d = definition(); d.version = d.version.split('.').map((part, index) => index === 2 ? String(Number(part) + 1) : part).join('.'); return d }
 test('actual producer projections cover all declared fields; external evidence remains unobserved locally', () => {
   const findings = inspectCoverage(definition(), fixture(), read)
-  assert.ok(findings.every(f => f.code === 'native_source_unobserved' && f.consumer === 'portfolio'))
+  assert.ok(findings.every(f => f.code === 'native_source_unobserved' && ['portfolio', 'software-architect'].includes(f.consumer ?? '')))
   assert.ok(findings.length > 0)
 })
 test('closed schema, duplicate identities, unknown keys and unsafe native paths fail', () => {

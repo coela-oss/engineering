@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+import { expectedReview, reviewRecords, type NativeReceipt, type ReviewResult } from '../src/hat-review.mts'
 import { execFileSync } from 'node:child_process'
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -24,7 +25,10 @@ const source = execFileSync('git', ['rev-parse', 'HEAD'], options).trim()
 execFileSync('git', ['diff', '--exit-code', 'HEAD', '--'], options)
 execFileSync('git', ['diff', '--exit-code', 'HEAD', '--'], { ...options, cwd: portfolio })
 const d = parseDefinition(readFileSync(join(root, definitionPath)))
-const origins = new Map([['https://github.com/coela-oss/engineering', root], ['https://github.com/coela-oss/portfolio', resolve(portfolio)]])
+const hatSource = process.env.ENGINEERING_HAT_SOURCE
+if (!hatSource) throw Error('Explicit independent HAT source required')
+const origins = new Map([['https://github.com/coela-oss/engineering', root], ['https://github.com/coela-oss/portfolio', resolve(portfolio)],
+  ['https://github.com/hathq/hat-software-architect', resolve(hatSource)]])
 const snapshot = localSnapshotReader(origins)
 const read: NativeRead = (owner, path, revision) => snapshot(owner, revision ?? source, path, 1048576)
 const web = d.interfaces.find(i => i.id === 'web-guidance')!, caller = web.consumers.find(c => c.id === 'portfolio')!
@@ -68,6 +72,12 @@ try {
   if (!mcpBinary || !mcpBinary.startsWith('/')) throw Error('Explicit shared MCP binary required')
   observations.push({ interface: 'mcp-public-document', records: publicDocuments(root) },
     { interface: 'mcp-public-document', consumer: 'zixcel-stdio-client', records: observePublicDocuments(root, mcpBinary) })
+  const hatPath = process.env.ENGINEERING_HAT_REPORT
+  if (!hatPath || !hatPath.startsWith('/')) throw Error('Explicit actual HAT consumer report required')
+  const hat = parseKnowledgeJson(readFileSync(hatPath)) as { complete: boolean; output: ReviewResult; staleSelectionRefused: boolean; authorityGranted: boolean; remoteWrites: boolean }
+  if (!hat.complete || !hat.staleSelectionRefused || hat.authorityGranted !== false || hat.remoteWrites !== false) throw Error('Incomplete HAT domain acceptance')
+  observations.push({ interface: 'hat-evidence-review', records: reviewRecords(expectedReview(root, native as unknown as NativeReceipt)) },
+    { interface: 'hat-evidence-review', consumer: 'software-architect', records: reviewRecords(hat.output) })
   const findings = inspectCoverage(d, observations, read)
   console.log(JSON.stringify({ kind: 'coela-interface-lifecycle-report', schema_version: 1,
     source, definition: { id: d.id, version: d.version, sha256: sha256(readFileSync(join(root, definitionPath))) },

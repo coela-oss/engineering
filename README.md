@@ -77,3 +77,6 @@ with the pinned independent checkout; CI retains the machine-readable report.
 [Full-document resources](docs/mcp-documents.md) generate the optional v2 configuration
 from the same admitted guidance. Native public-registry publication and caller
 acceptance remain separate gates; existing v1 excerpts and bundled Skills still work.
+
+The [independent HAT review adapter](docs/hat-evidence-review.md) keeps Coela
+source/semantic selection separate from HAT-owned evidence consistency proposals.
