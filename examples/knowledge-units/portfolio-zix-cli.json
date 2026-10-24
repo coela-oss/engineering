@@ -1,0 +1,72 @@
+{
+  "schema_version": "coela-knowledge-unit/1-candidate",
+  "id": "portfolio-zix-cli",
+  "version": "0.1.0",
+  "kind": "case-study",
+  "owner": "https://github.com/coela-oss/portfolio",
+  "default_locale": "ja",
+  "presentation": [
+    {
+      "locale": "ja",
+      "title": {
+        "source_id": "work-ja",
+        "pointer": "/0/title"
+      },
+      "summary": {
+        "source_id": "work-ja",
+        "pointer": "/0/summary"
+      }
+    },
+    {
+      "locale": "en",
+      "title": {
+        "source_id": "work-en",
+        "pointer": "/0/title"
+      },
+      "summary": {
+        "source_id": "work-en",
+        "pointer": "/0/summary"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "work-ja",
+      "role": "case-study",
+      "locale": "ja",
+      "reference": {
+        "kind": "artifact",
+        "repository": "https://github.com/coela-oss/portfolio",
+        "revision": "7f53f5374599e953e9ccdd7c1bc92e0a2dd4a87c",
+        "path": "site/work.ja.json",
+        "sha256": "c33ef05e6573a8bfa844d7604c499d31b9bdac3add2905c8f9b7d08f7fdfa48a",
+        "media_type": "application/json"
+      }
+    },
+    {
+      "id": "work-en",
+      "role": "case-study",
+      "locale": "en",
+      "reference": {
+        "kind": "artifact",
+        "repository": "https://github.com/coela-oss/portfolio",
+        "revision": "7f53f5374599e953e9ccdd7c1bc92e0a2dd4a87c",
+        "path": "site/work.en.json",
+        "sha256": "84ed0f672c2dadaa65ab2e9491f0c5eabddb478bda32eb609f50981c91cca7ca",
+        "media_type": "application/json"
+      }
+    },
+    {
+      "id": "case-narratives",
+      "role": "case-study",
+      "reference": {
+        "kind": "artifact",
+        "repository": "https://github.com/coela-oss/portfolio",
+        "revision": "7f53f5374599e953e9ccdd7c1bc92e0a2dd4a87c",
+        "path": "site/case-stories.json",
+        "sha256": "32a48a6d0616674b5e03394123c1d82d07b5fb5c18c9f73cb06a033a5f4e6609",
+        "media_type": "application/json"
+      }
+    }
+  ]
+}

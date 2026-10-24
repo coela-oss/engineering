@@ -14,6 +14,11 @@ signed HAT or new hosted MCP endpoint is installed or released by this change.
 The existing content release 0.2.4, reader tooling 0.1.1 and manifest-v1
 declaration 0.1.0 retain their identities.
 
+The [candidate source schema](knowledge-source-schema.md) details a Coela-owned
+editorial envelope and Portfolio JSON mapping. It is deliberately not a new
+cross-ecosystem manifest: native semantics, HAT contracts and deployment settings
+remain separate. The envelope is a draft without a production loader.
+
 ## Distribution and responsibility map
 
 | Unit | Owns | Reuses | Does not imply |
