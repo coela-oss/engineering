@@ -71,3 +71,9 @@ acceptance steps tracked in Engineering #14.
 validate actual Plugin/Web coverage and report migrations without replacing native
 contracts. Run `ENGINEERING_PORTFOLIO_SOURCE=/admitted/portfolio pnpm verify:lifecycle`
 with the pinned independent checkout; CI retains the machine-readable report.
+
+## Complete MCP document projection
+
+[Full-document resources](docs/mcp-documents.md) generate the optional v2 configuration
+from the same admitted guidance. Native public-registry publication and caller
+acceptance remain separate gates; existing v1 excerpts and bundled Skills still work.
