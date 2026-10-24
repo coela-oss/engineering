@@ -5,3 +5,4 @@
 /.env.*
 /.hathq-validator/
 /.mcp-gateway/
+/.portfolio-source/

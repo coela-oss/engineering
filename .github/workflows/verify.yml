@@ -18,6 +18,14 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+          fetch-depth: 0
+      - name: Read accepted independent Portfolio source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: coela-oss/portfolio
+          ref: 7f53f5374599e953e9ccdd7c1bc92e0a2dd4a87c
+          path: .portfolio-source
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: 24.22.1
@@ -25,10 +33,13 @@ jobs:
         with:
           version: 10.29.3
       - name: Verify shared content reader and projections
+        env:
+          ENGINEERING_PORTFOLIO_SOURCE: ${{ github.workspace }}/.portfolio-source
         run: |
           pnpm install --frozen-lockfile --ignore-scripts
           pnpm typecheck
           pnpm test
+          pnpm verify:knowledge
       - name: Check public content identity and digests
         shell: bash
         run: bash scripts/verify-content.sh

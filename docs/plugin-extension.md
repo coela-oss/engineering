@@ -11,13 +11,15 @@ packages and not a mandatory loading pipeline.
 
 This document records the extension design. No plugin, semantic adoption,
 signed HAT or new hosted MCP endpoint is installed or released by this change.
-The existing content release 0.2.4, reader tooling 0.1.1 and manifest-v1
-declaration 0.1.0 retain their identities.
+The existing content release 0.2.4 and manifest-v1 declaration 0.1.0 retain their
+identities. The initial reader was 0.1.1; source-private tooling 0.1.2 adds bounded
+candidate knowledge-unit resolution without changing those distributed artifacts.
 
 The [candidate source schema](knowledge-source-schema.md) details a Coela-owned
 editorial envelope and Portfolio JSON mapping. It is deliberately not a new
 cross-ecosystem manifest: native semantics, HAT contracts and deployment settings
-remain separate. The envelope is a draft without a production loader.
+remain separate. The envelope is a draft with source-level resolution acceptance,
+not a stable deployed plugin/semantic/HAT loader.
 
 ## Distribution and responsibility map
 
