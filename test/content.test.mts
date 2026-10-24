@@ -85,3 +85,23 @@ test('website and checked-in MCP projection are deterministic consumers of the s
       web.license, web.source, web.excerpt]) assert.ok(toml.includes(value))
   }
 })
+
+test('presentation follows admitted document headings after an ID rename and refuses ambiguous titles', () => fixture(root => {
+  const path = join(root, 'datasets/catalog.json')
+  const original = JSON.parse(readFileSync(path, 'utf8'))
+  const entry = original.entries[0]
+  entry.id = 'renamed-guidance'
+  const document = join(root, entry.path)
+  const setDocument = (text: string) => {
+    writeFileSync(document, text)
+    entry.sha256 = sha256(Buffer.from(text))
+    writeFileSync(path, JSON.stringify(original))
+    return { ...selections[0]!, contentId: entry.id, contentSha256: entry.sha256,
+      catalogSha256: sha256(readFileSync(path)) }
+  }
+  const selection = setDocument('# New canonical title\n\nOriginal body.\n')
+  assert.equal(websiteExcerpt(root, selection).title, 'New canonical title')
+  for (const text of ['No heading.\n', '# One\n\n# Two\n', `# ${'あ'.repeat(172)}\n`]) {
+    assert.throws(() => websiteExcerpt(root, setDocument(text)), /ambiguous_document_title|invalid_document_title/)
+  }
+}))
