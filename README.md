@@ -29,6 +29,9 @@ adds a small JSON authoring envelope with immutable content references. Its
 templates preserve native sem-lang definitions and Web-specific composition;
 candidate validation is not production loading or semantic adoption acceptance.
 
+[Cross-owner rollout roadmap](docs/knowledge-rollout-roadmap.md) records the
+impact audit, dependency order, owner Issues and release/caller closure gates.
+
 ## HAT integration
 
 [HAT integration](integrations/hat/README.md) uses HATHQ declarations and shared
