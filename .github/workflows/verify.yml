@@ -42,7 +42,7 @@ jobs:
           pnpm test
           pnpm verify:knowledge
       - name: Install native semantic consumer toolchain in the ephemeral runner
-        run: rustup toolchain install 1.97.1 --profile minimal
+        run: rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy
       - name: Compile and accept pinned native semantic consumer
         env:
           COELA_SEMANTIC_INPUT: ${{ runner.temp }}/coela-semantic-input.json
