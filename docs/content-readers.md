@@ -30,8 +30,10 @@ pretending to be complete.
 Whitespace is normalized; excerpts are plain text, never HTML. The portfolio can
 consume this projection instead of editing another principles copy. It must
 preserve the identity and attribution when adapting the display. The source
-acceptance test executes this independent projection, but portfolio rendering and
-production deployment are not yet accepted by this change.
+acceptance test executes this independent projection. Portfolio 0.1.10 production
+acceptance subsequently completed through independent file/redirect verification,
+DNS/custom-domain preservation and operator confirmation of disabled development
+URLs. Hosted CI readback remains Cloudflare-challenge blocked, not successful.
 
 ## Existing MCP consumer
 
@@ -60,11 +62,13 @@ A future HAT caller must bind its real subject, read scope and selected content
 identity through Hatter's existing execution authority. That live caller is not
 simulated here. sem-lang owns interpretation, not this reader.
 
-Issue #2 remains open for portfolio integration/deployment, actual HAT caller
-subject/scope acceptance and immutable release/distribution acceptance. A checked
-source snapshot, a locally verified reader, a running stdio consumer, hosted MCP
-and a deployed portfolio are distinct results. Existing local heavy runtime/build
-holds remain in force; Rust builds run only in the ephemeral owner CI runner.
+Content 0.2.4 and portfolio integration/distribution are accepted. Issue #2 now
+tracks the [plugin-first extension design](plugin-extension.md): actual plugin
+installation/full-guidance application and consumer rejection acceptance, with
+semantic adoption and HAT authority explicitly separate follow-up scopes. A
+checked source snapshot, a locally verified reader, a running stdio consumer,
+hosted MCP and a deployed portfolio are distinct results. Existing local heavy
+runtime/build holds remain in force; Rust builds run only in ephemeral owner CI.
 
 ## Content-only release candidate
 
