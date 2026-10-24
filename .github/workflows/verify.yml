@@ -54,10 +54,23 @@ jobs:
           cargo +1.97.1 clippy --locked --manifest-path acceptance/semantic/Cargo.toml --all-targets -- -D warnings
           cargo +1.97.1 build --locked --manifest-path acceptance/semantic/Cargo.toml
           "$CARGO_TARGET_DIR/debug/coela-semantic-consumer" "$COELA_SEMANTIC_INPUT" > "$RUNNER_TEMP/native-semantic-acceptance.json"
+      - name: Accept published independent read-only MCP consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/zixcel-mcp-gateway-0.2.0.crate"
+          curl --fail --silent --show-error --max-time 30 --max-filesize 1048576 https://static.crates.io/crates/zixcel-mcp-gateway/zixcel-mcp-gateway-0.2.0.crate --output "$archive"
+          printf '%s  %s\n' '46ead1b2760ff353eb6bdade23d42ea85f8865d4d7297aa0f2079891f989e2af' "$archive" | sha256sum --check
+          mkdir "$RUNNER_TEMP/mcp-published-source"
+          tar -xzf "$archive" -C "$RUNNER_TEMP/mcp-published-source"
+          cargo +1.97.1 install --path "$RUNNER_TEMP/mcp-published-source/zixcel-mcp-gateway-0.2.0" --locked --debug --root "$RUNNER_TEMP/mcp-gateway-install"
+          "$RUNNER_TEMP/mcp-gateway-install/bin/zixcel-mcp-gateway" validate-config --config integrations/mcp/public.toml
+          ENGINEERING_MCP_BINARY="$RUNNER_TEMP/mcp-gateway-install/bin/zixcel-mcp-gateway" pnpm test:mcp
       - name: Verify interface lifecycle against actual Plugin and independent Portfolio
         id: lifecycle
         env:
           ENGINEERING_PORTFOLIO_SOURCE: ${{ github.workspace }}/.portfolio-source
+          ENGINEERING_MCP_BINARY: ${{ runner.temp }}/mcp-gateway-install/bin/zixcel-mcp-gateway
           ENGINEERING_SEMANTIC_BINARY: ${{ runner.temp }}/coela-semantic-target/debug/coela-semantic-consumer
           LIFECYCLE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: node scripts/verify-lifecycle.mts --base "$LIFECYCLE_BASE" > "$RUNNER_TEMP/interface-lifecycle-report.json"
@@ -121,18 +134,3 @@ jobs:
           set -euo pipefail
           export CARGO_TARGET_DIR="$RUNNER_TEMP/hathq-validator-target"
           cargo +1.97.1 run --locked --manifest-path .hathq-validator/Cargo.toml -p hat-specifications-cli --bin hat-specifications -- validate "$GITHUB_WORKSPACE/integrations/hat/coela-engineering.hat.toml"
-      - name: Read fixed shared MCP implementation
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          repository: zixcel/zixcel-mcp-gateway
-          ref: 0cfe84b3e0a63cd1a4dbafd822b2fc0db16080eb
-          path: .mcp-gateway
-          persist-credentials: false
-      - name: Accept actual independent read-only MCP consumer
-        shell: bash
-        run: |
-          set -euo pipefail
-          export CARGO_TARGET_DIR="$RUNNER_TEMP/mcp-gateway-target"
-          cargo +1.97.1 build --locked --manifest-path .mcp-gateway/Cargo.toml --bin zixcel-mcp-gateway
-          "$CARGO_TARGET_DIR/debug/zixcel-mcp-gateway" validate-config --config integrations/mcp/public.toml
-          ENGINEERING_MCP_BINARY="$CARGO_TARGET_DIR/debug/zixcel-mcp-gateway" pnpm test:mcp

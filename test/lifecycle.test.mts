@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { parseDefinition, inspectCoverage, compareDefinitions, type Definition, type Observation } from '../src/lifecycle.mts'
 import { readSelections } from '../src/content.mts'
+import { publicDocuments } from '../src/mcp-documents.mts'
 import { semanticInput } from '../src/semantic.mts'
 import { websiteExcerpt } from '../src/projections.mts'
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -19,7 +20,9 @@ const fixture = (): Observation[] => {
   return [{ interface: 'portable-plugin', records: [manifest] }, { interface: 'portable-plugin', consumer: 'plugin-package', records: [structuredClone(manifest)] },
     { interface: 'web-guidance', records: rows }, { interface: 'web-guidance', consumer: 'portfolio', records: structuredClone(rows) },
     { interface: 'semantic-source-selection', records: [semanticInput(root).projection] },
-    { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [structuredClone(semanticInput(root).projection)] }]
+    { interface: 'semantic-source-selection', consumer: 'pinned-sem-lang-consumer', records: [structuredClone(semanticInput(root).projection)] },
+    { interface: 'mcp-public-document', records: publicDocuments(root) },
+    { interface: 'mcp-public-document', consumer: 'zixcel-stdio-client', records: structuredClone(publicDocuments(root)) }]
 }
 const codes = (d: Definition, o = fixture()) => inspectCoverage(d, o, read).map(f => f.code)
 const next = () => { const d = definition(); d.version = d.version.split('.').map((part, index) => index === 2 ? String(Number(part) + 1) : part).join('.'); return d }

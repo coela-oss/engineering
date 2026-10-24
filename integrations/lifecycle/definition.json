@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "coela-engineering-delivery",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "interfaces": [
     {
       "id": "portable-plugin",
@@ -375,6 +375,111 @@
             },
             {
               "name": "/termName",
+              "support": "required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mcp-public-document",
+      "owner": "https://github.com/coela-oss/engineering",
+      "native_sources": [
+        {
+          "path": "src/mcp-documents.mts",
+          "sha256": "8dd7dd4c871b854535b022b70c649ddafdc3e1fc5c17479b8756d8bd6934a648"
+        },
+        {
+          "path": "integrations/mcp/documents.toml",
+          "sha256": "3b3bf5fadbb060b1d076df41707413a6436628da986a0e35ec60c8c6a044e3b6"
+        }
+      ],
+      "identity": [
+        "/uri"
+      ],
+      "fields": [
+        {
+          "name": "/uri",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/mimeType",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/_meta/zixcel~1source",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/_meta/zixcel~1sha256",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/_meta/zixcel~1license",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/_meta/zixcel~1attribution",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "/_meta/zixcel~1classification",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "consumers": [
+        {
+          "id": "zixcel-stdio-client",
+          "owner": "https://github.com/coela-oss/engineering",
+          "native_sources": [
+            {
+              "path": "src/mcp-observation.mts",
+              "sha256": "ddf7a94f1390a1081beeb313dea00d703433e42e2e968c348d2c307aee12c124"
+            }
+          ],
+          "fields": [
+            {
+              "name": "/uri",
+              "support": "required"
+            },
+            {
+              "name": "/mimeType",
+              "support": "required"
+            },
+            {
+              "name": "/text",
+              "support": "required"
+            },
+            {
+              "name": "/_meta/zixcel~1source",
+              "support": "required"
+            },
+            {
+              "name": "/_meta/zixcel~1sha256",
+              "support": "required"
+            },
+            {
+              "name": "/_meta/zixcel~1license",
+              "support": "required"
+            },
+            {
+              "name": "/_meta/zixcel~1attribution",
+              "support": "required"
+            },
+            {
+              "name": "/_meta/zixcel~1classification",
               "support": "required"
             }
           ]
