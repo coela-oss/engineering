@@ -100,8 +100,9 @@ store, not an existing user runtime or default Hatter definition package.
 
 ## Expansion gate
 
-Before K4/K5/M1, add the actual owner-native producer/consumer observations and
-corresponding native validators. Until then their acceptance is **not observed**, not
-implicitly covered by the two successful interfaces here. Reforge may reuse this
+The native Coela source slice adds its own compiler/adoption/storage evidence.
+Before K5/M1, add their actual owner-native observations and validators. HAT binding,
+execution authority and full-document MCP acceptance remain **not observed**; neither
+Plugin/Web coverage nor this semantic source slice certifies them. Reforge may reuse this
 method where appropriate, but its AST/DAS/runtime coverage belongs to vpremises;
 this Coela definition is not a mandatory ecosystem-wide runtime dependency.
