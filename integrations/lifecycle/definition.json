@@ -258,7 +258,7 @@
       "native_sources": [
         {
           "path": "src/semantic.mts",
-          "sha256": "fa535683eeb464eaa2b2c40f6aaaf1039c4c715b50f0fb33b7687d89692fb4cf"
+          "sha256": "b8abe093445634411663413d020be58b853ac41634f7dc8c82d0925eca8fadc0"
         },
         {
           "path": "integrations/semantic/source.json",
@@ -338,6 +338,10 @@
             {
               "path": "acceptance/semantic/src/surface.rs",
               "sha256": "db2a5c4e8dcd107e093546a95acb977efd6085c4b7db624f0d209f6d827e010d"
+            },
+            {
+              "path": "acceptance/semantic/src/main.rs",
+              "sha256": "be794517db700eda29675eb4c4bb67feafb71dcd955624efef9541d629dac02c"
             }
           ],
           "fields": [

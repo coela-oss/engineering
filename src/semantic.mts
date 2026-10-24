@@ -21,6 +21,11 @@ export function semanticInputFromSource(read: (path: string, limit: number) => U
     || !descriptor.module || Object.keys(descriptor.module).sort().join() !== 'path,sha256'
     || descriptor.module.path !== SEMANTIC_FILES[0] || (typeof descriptor.module.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(descriptor.module.sha256))
     || (typeof descriptor.term !== 'string' || !/^[A-Za-z][A-Za-z0-9]{0,63}$/.test(descriptor.term))) throw new ContentError('invalid_semantic_source_selection')
+  const cargo = new TextDecoder('utf-8', { fatal: true }).decode(read('acceptance/semantic/Cargo.toml', 16384))
+  // Exact expected dependency declarations; Cargo remains the TOML/feature validator.
+  const dependencies = cargo.split('\n').filter(line => /^sem-lang(?:-[a-z]+)* = /.test(line))
+  if (dependencies.length !== 7 || dependencies.some(line => !line.includes(`rev = "${descriptor.sem_lang_revision}"`)
+    || !line.includes('git = "https://github.com/semantic-language/sem-lang"'))) throw new ContentError('semantic_consumer_revision_mismatch')
   const source = read(descriptor.module.path, 16384)
   if (source.byteLength > 16384 || sha256(source) !== descriptor.module.sha256) throw new ContentError('semantic_source_digest_mismatch')
   const moduleSource = new TextDecoder('utf-8', { fatal: true }).decode(source)
